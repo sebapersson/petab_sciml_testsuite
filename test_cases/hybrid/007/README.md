@@ -1,4 +1,4 @@
-# Test Case 008
+# Test Case 007
 
 Test case for when a feed-forward neural network sets one of the model initial value, with the input to the network provided by two parameters from the parameters table. Since the network is not a part of the ODE model's right-hand side (RHS), it should only be evaluated once per likelihood computation for computational efficiency.
 

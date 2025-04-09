@@ -1,4 +1,4 @@
-# Test Case 010
+# Test Case 009
 
 Test case for when two feed-forward neural network appears in the observable formulas.
 

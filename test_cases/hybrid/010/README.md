@@ -1,4 +1,4 @@
-# Test Case 011
+# Test Case 010
 
 Test case for when two feed-forward neural network are part of the ODE right-hand side.
 

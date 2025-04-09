@@ -1,4 +1,4 @@
-# Test Case 018
+# Test Case 017
 
 Test case for when a feed-forward neural network sets one of the model parameters, with the input to the network provided by two parameters from the parameters table, where the network parameters are assumed constant (not estimated). Since the network is not a part of the ODE model's right-hand side (RHS), it should only be evaluated once per likelihood computation for computational efficiency.
 

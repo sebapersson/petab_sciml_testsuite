@@ -1,4 +1,4 @@
-# Test Case 004
+# Test Case 003
 
 Test case for when a feed-forward network sets one of the model parameters, but the input to the network is given by two parameters that are defined in the conditions table. Since the network is not a part of the ODE model's RHS, it should only be evaluated once per simulation condition for computational efficiency.
 

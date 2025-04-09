@@ -1,4 +1,4 @@
-# Test Case 017
+# Test Case 016
 
 Test case for when a feed-forward neural network is a part of the ODE right-hand side, where the neural net parameters are fixated. That is, they are not estimated.
 
