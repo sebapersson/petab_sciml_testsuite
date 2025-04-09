@@ -1,0 +1,3 @@
+conditionId	net1_input1	net1_input2
+cond1	10.0	20.0
+cond2	net1_input_pre1	net1_input_pre2

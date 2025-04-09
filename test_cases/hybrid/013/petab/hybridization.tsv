@@ -1,0 +1,4 @@
+targetId	targetValue
+gamma	net1_output1
+alpha	net2_input1
+predator	net2_input2
