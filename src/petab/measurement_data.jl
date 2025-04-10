@@ -16,10 +16,14 @@ function get_measurements(llh_id::Symbol)::DataFrame
         oprob2 = remake(oprob_reference, p = p2)
         sol1 = solve(oprob1, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = 1:1:10)
         sol2 = solve(oprob2, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = 1:1:10)
-        df1 = DataFrame(observableId = "prey_o", simulationConditionId = "cond1", measurement = sol1[1, :] + randn(rng, 10) .* 0.05, time = sol1.t)
-        df2 = DataFrame(observableId = "predator_o", simulationConditionId = "cond1", measurement = sol1[2, :] + randn(rng, 10) .* 0.05, time = sol1.t)
-        df3 = DataFrame(observableId = "prey_o", simulationConditionId = "cond2", measurement = sol2[1, :] + randn(rng, 10) .* 0.05, time = sol2.t)
-        df4 = DataFrame(observableId = "predator_o", simulationConditionId = "cond2", measurement = sol2[2, :] + randn(rng, 10) .* 0.05, time = sol2.t)
+        df1 = DataFrame(observableId = "prey_o", simulationConditionId = "cond1",
+                        measurement = sol1[1, :] + randn(rng, 10) .* 0.05, time = sol1.t)
+        df2 = DataFrame(observableId = "predator_o", simulationConditionId = "cond1",
+                        measurement = sol1[2, :] + randn(rng, 10) .* 0.05, time = sol1.t)
+        df3 = DataFrame(observableId = "prey_o", simulationConditionId = "cond2",
+                        measurement = sol2[1, :] + randn(rng, 10) .* 0.05, time = sol2.t)
+        df4 = DataFrame(observableId = "predator_o", simulationConditionId = "cond2",
+                        measurement = sol2[2, :] + randn(rng, 10) .* 0.05, time = sol2.t)
         return vcat(df1, df2, df3, df4)
     end
 

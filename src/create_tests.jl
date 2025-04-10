@@ -1,5 +1,7 @@
-function save_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol, petab_parameters_ids::Vector{Symbol};
-                          estimate_net_parameters::Bool = true, input_ids::Union{Nothing, Vector{Symbol}} = nothing)::Nothing
+function save_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol,
+                          petab_parameters_ids::Vector{Symbol};
+                          estimate_net_parameters::Bool = true,
+                          input_ids::Union{Nothing, Vector{Symbol}} = nothing)::Nothing
     nn_models = get_net_models(nets_info)
     measurements = get_measurements(llh_id)
     ode_problem = get_odeproblem(ode_id, nn_models)
@@ -15,10 +17,16 @@ function save_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Sym
     return nothing
 end
 
-function create_petab_files(dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::Symbol, petab_parameters_ids::Vector{Symbol}, condition_table_id::Symbol, observable_table_id::Symbol, mapping_table::DataFrame, hybridization_table::DataFrame; estimate_net_parameters::Bool = true, input_ids::Union{Nothing, Vector{Symbol}} = nothing)::Nothing
+function create_petab_files(dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::Symbol,
+                            petab_parameters_ids::Vector{Symbol},
+                            condition_table_id::Symbol, observable_table_id::Symbol,
+                            mapping_table::DataFrame, hybridization_table::DataFrame;
+                            estimate_net_parameters::Bool = true,
+                            input_ids::Union{Nothing, Vector{Symbol}} = nothing)::Nothing
     dir_petab = joinpath(dir_test, "petab")
     save_sbml(sbml_id, dir_petab)
-    save_parameters_table(petab_parameters_ids, nets_info, estimate_net_parameters, dir_petab)
+    save_parameters_table(petab_parameters_ids, nets_info, estimate_net_parameters,
+                          dir_petab)
     save_measurements_table(llh_id, dir_petab)
     save_conditions_table(condition_table_id, dir_petab)
     save_observables_table(observable_table_id, dir_petab)
