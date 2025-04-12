@@ -11,7 +11,7 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
 
     if llh_id in [:UDE1, :UDE2]
         _ode_problem = remake(ode_problem, p = x)
-        sol = solve(ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
+        sol = solve(_ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
                     saveat = unique(measurements.time))
         simulated_values = vcat(sol[1, :], sol[2, :])
     end

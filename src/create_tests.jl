@@ -37,3 +37,12 @@ function create_petab_files(dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::
     CSV.write(joinpath(dir_petab, "hybridization.tsv"), hybridization_table, delim = '\t')
     return nothing
 end
+
+function create_hybrid_tests()
+    dir_tests = joinpath(@__DIR__, "..", "test_cases", "hybrid")
+    test_cases = filter(x -> x != "README.md", readdir(dir_tests))
+    for test_case in test_cases
+        @info "Hybrid test-case $(test_case)"
+        include(joinpath(dir_tests, test_case, "create.jl"))
+    end
+end

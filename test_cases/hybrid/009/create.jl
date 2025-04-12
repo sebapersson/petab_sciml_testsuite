@@ -11,13 +11,26 @@ observable_table_id = :Table3
 sbml_id = :lv_reference
 petab_parameters_ids = [:alpha, :delta, :beta, :gamma]
 # Mapping and hybridization generally differ between tests and must thus be hand-coded
-mapping_table = DataFrame(petabEntityId = ["net1_input1", "net1_input2", "net1_output1",
-                              "net1_ps_file",
-                              "net2_input1", "net2_input2", "net2_output1", "net2_ps_file"],
-                          modelEntityId = ["net1.inputs[0][0]", "net1.inputs[0][1]",
-                              "net1.outputs[0][0]", "net1.parameters",
-                              "net2.inputs[0][0]", "net2.inputs[0][1]",
-                              "net2.outputs[0][0]", "net2.parameters"])
+mapping_table = DataFrame(petabEntityId = [
+                              "net1_input1",
+                              "net1_input2",
+                              "net1_output1",
+                              "net1_ps",
+                              "net2_input1",
+                              "net2_input2",
+                              "net2_output1",
+                              "net2_ps"
+                          ],
+                          modelEntityId = [
+                              "net1.inputs[0][0]",
+                              "net1.inputs[0][1]",
+                              "net1.outputs[0][0]",
+                              "net1.parameters",
+                              "net2.inputs[0][0]",
+                              "net2.inputs[0][1]",
+                              "net2.outputs[0][0]",
+                              "net2.parameters"
+                          ])
 hybridization_table = DataFrame(targetId = ["prey", "predator", "alpha", "predator"],
                                 targetValue = [
                                     "net1_input1",

@@ -44,9 +44,9 @@ end
 
 function get_net3()
     rng = StableRNGs.StableRNG(1)
-    nn_model = @compact(layer1=Conv((5, 5), 3 => 1; cross_correlation = true),
+    nn_model = @compact(layer1=Conv((5, 5), 3=>1; cross_correlation = true),
                         layer2=FlattenLayer(),
-                        layer3=Dense(36 => 1, Lux.relu)) do x
+                        layer3=Dense(36=>1, Lux.relu)) do x
         embed = layer1(x)
         embed = layer2(embed)
         out = layer3(embed)

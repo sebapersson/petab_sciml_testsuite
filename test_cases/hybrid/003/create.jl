@@ -13,7 +13,7 @@ mapping_table = DataFrame(petabEntityId = [
                               "net1_input1",
                               "net1_input2",
                               "net1_output1",
-                              "net1_ps_file"
+                              "net1_ps"
                           ],
                           modelEntityId = [
                               "net1.inputs[0][0]",
