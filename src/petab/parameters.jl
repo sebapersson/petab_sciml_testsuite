@@ -40,7 +40,7 @@ const NET1_INPUT_PRE2 = DataFrame(parameterId = "net1_input_pre2",
                                   nominalValue = 1.0,
                                   estimate = 0)
 
-const NET1_INPUT_PRE2_EST = DataFrame(parameterId = "net1_input_pre2",
+const NET1_INPUT_PRE2_EST = DataFrame(parameterId = "net1_input_pre2_est",
                                       parameterScale = "lin",
                                       lowerBound = "-inf",
                                       upperBound = "inf",

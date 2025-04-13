@@ -11,13 +11,13 @@ const OBSERVABLE_TABLE2 = DataFrame(observableId = ["prey_o", "predator_o"],
                                     noiseDistribution = ["normal", "normal"])
 
 const OBSERVABLE_TABLE3 = DataFrame(observableId = ["prey_o", "predator_o"],
-                                    observableFormula = ["net1_output1", "net2_output2"],
+                                    observableFormula = ["net1_output1", "net2_output1"],
                                     noiseFormula = [0.05, 0.05],
                                     observableTransformation = ["lin", "lin"],
                                     noiseDistribution = ["normal", "normal"])
 
 const OBSERVABLE_TABLE4 = DataFrame(observableId = ["prey_o", "predator_o"],
-                                    observableFormula = ["prey", "net2_output2"],
+                                    observableFormula = ["prey", "net2_output1"],
                                     noiseFormula = [0.05, 0.05],
                                     observableTransformation = ["lin", "lin"],
                                     noiseDistribution = ["normal", "normal"])

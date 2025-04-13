@@ -31,12 +31,9 @@ mapping_table = DataFrame(petabEntityId = [
                               "net2.outputs[0][0]",
                               "net2.parameters"
                           ])
-hybridization_table = DataFrame(targetId = ["gamma", "alpha", "predator"],
-                                targetValue = [
-                                    "net1_output1",
-                                    "net2_input1",
-                                    "net2_input2"
-                                ])
+hybridization_table = DataFrame(
+    targetId = ["gamma", "net2_input1", "net2_input2"],
+    targetValue = ["net1_output1", "alpha", "predator"])
 
 save_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)
 create_petab_files(@__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids,

@@ -35,15 +35,15 @@ hybridization_table = DataFrame(targetId = [
                                     "net1_input1",
                                     "net1_input2",
                                     "gamma",
-                                    "alpha",
-                                    "predator"
+                                    "net2_input1",
+                                    "net2_input2"
                                 ],
                                 targetValue = [
                                     "prey",
                                     "predator",
                                     "net1_output1",
-                                    "net2_input1",
-                                    "net2_input2"
+                                    "alpha",
+                                    "predator"
                                 ])
 
 save_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)

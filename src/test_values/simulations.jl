@@ -57,7 +57,7 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
 
     if llh_id == :pre_ODE6
         st1, nn_model1 = nn_models[:net1]
-        st2, nn_model2 = nn_models[:net1]
+        st2, nn_model2 = nn_models[:net2]
         γ = nn_model1([1.0, 1.0], x.net1, st1)[1][1]
         β = nn_model2([2.0, 2.0], x.net2, st2)[1][1]
         p = (alpha = 1.3, delta = 1.8, beta = β, gamma = γ)
@@ -121,11 +121,11 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
 
     if llh_id == :COMBO2
         st2, nn_model2 = nn_models[:net2]
-        ode_problem.p.beta = nn_model2([2.0, 2.0], x.net2, st2)[1][1]
         ode_problem.p.net1 .= x.net1
         sol = solve(ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
                     saveat = unique(measurements.time))
-        predator = [nn_model2(sol[:, i], x.net2, st2)[1][1] for i in eachindex(sol.t)]
+        α = x.alpha
+        predator = [nn_model2([α, sol[2, i]], x.net2, st2)[1][1] for i in eachindex(sol.t)]
         simulated_values = vcat(sol[1, :], predator)
     end
 
@@ -136,7 +136,8 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
              gamma = nn_model1([1.0, 1.0], x.net1, st1)[1][1])
         sol = solve(ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
                     saveat = unique(measurements.time))
-        predator = [nn_model2(sol[:, i], x.net2, st2)[1][1] for i in eachindex(sol.t)]
+        α = x.alpha
+        predator = [nn_model2([α, sol[2, i]], x.net2, st2)[1][1] for i in eachindex(sol.t)]
         simulated_values = vcat(sol[1, :], predator)
     end
 
