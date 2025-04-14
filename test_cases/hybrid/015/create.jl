@@ -10,14 +10,11 @@ sbml_id = :lv_reference
 input_ids = [:net3_input1, :net3_input2]
 petab_parameters_ids = [:alpha, :delta, :beta]
 # Mapping and hybridization generally differ between tests and must thus be hand-coded
-mapping_table = DataFrame(petabEntityId = ["net1_input", "net1_output1", "net1_ps"],
-                          modelEntityId = [
-                              "net1.inputs[0]",
-                              "net1.outputs[0][0]",
-                              "net1.parameters"
-                          ])
+mapping_table = DataFrame(
+    petabEntityId = ["net3_input", "net3_output1", "net3_ps"],
+    modelEntityId = ["net3.inputs[0]", "net3.outputs[0][0]", "net3.parameters"])
 hybridization_table = DataFrame(targetId = ["gamma"],
-                                targetValue = ["net1_output1"])
+                                targetValue = ["net3_output1"])
 
 save_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids;
                  input_ids = input_ids)

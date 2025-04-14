@@ -1,6 +1,6 @@
 # Test Case 018
 
-Test case for when a feed-forward neural network appears in one of the observable formulas.
+Test case for when a feed-forward neural network appears in one of the observable formulas,  where the neural net parameters are fixated. That is, they are not estimated.
 
 ## Model Structure
 

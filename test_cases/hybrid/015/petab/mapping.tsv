@@ -1,4 +1,4 @@
 petabEntityId	modelEntityId
-net1_input	net1.inputs[0]
-net1_output1	net1.outputs[0][0]
-net1_ps	net1.parameters
+net3_input	net3.inputs[0]
+net3_output1	net3.outputs[0][0]
+net3_ps	net3.parameters

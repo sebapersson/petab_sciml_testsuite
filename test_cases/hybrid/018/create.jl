@@ -22,8 +22,8 @@ mapping_table = DataFrame(petabEntityId = [
                               "net1.outputs[0][0]",
                               "net1.parameters"
                           ])
-hybridization_table = DataFrame(targetId = ["net1_input1", "net1_input2", "gamma"],
-                                targetValue = ["prey", "predator", "net1_output1"])
+hybridization_table = DataFrame(targetId = ["net1_input1", "net1_input2"],
+                                targetValue = ["prey", "predator"])
 
 save_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids;
                  estimate_net_parameters = false)
