@@ -1,6 +1,6 @@
-# Test Case 001
+# Test Case 003
 
-Test case for neural-network parameter initialization, when for `layer1` parameters are set to a value `0`. The other parameters should be initialized according to the neural network parameter file.
+Test case for neural-network parameter initialization, when for `layer1.bias` (bias for `layer1`) parameters are set to a value `0`. The other parameters should be initialized according to the neural network parameter file.
 
 ## Model Structure
 
