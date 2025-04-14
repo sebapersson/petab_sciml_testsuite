@@ -61,6 +61,13 @@ const NET2_INPUT_PRE2 = DataFrame(parameterId = "net2_input_pre2",
     nominalValue = 2.0,
     estimate = 0)
 
+const NET1_LAYER1 = DataFrame(parameterId = "net1_layer1",
+    parameterScale = "lin",
+    lowerBound = "-inf",
+    upperBound = "inf",
+    nominalValue = 0.0,
+    estimate = 1)
+
 function save_parameters_table(petab_parameters_ids::Vector{Symbol}, nets_info::Dict,
         estimate_net_parameters::Bool, dir_petab)
     df_mech = DataFrame()
@@ -115,6 +122,9 @@ function _get_parameter_info(id::Symbol, what_return::Symbol)
     end
     if id == :net2_input_pre2
         info = NET2_INPUT_PRE2
+    end
+    if id == :net1_layer1
+        info = NET1_LAYER1
     end
 
     what_return == :DataFrame && return info

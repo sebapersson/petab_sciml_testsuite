@@ -26,7 +26,7 @@ mapping_table = DataFrame(
 hybridization_table = DataFrame(targetId = ["net1_input1", "net1_input2"],
     targetValue = ["prey", "predator"])
 
-save_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids;
+save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids;
     estimate_net_parameters = false)
 create_petab_files(@__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids,
     condition_table_id, observable_table_id, mapping_table,

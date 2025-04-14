@@ -1,4 +1,4 @@
-function save_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol,
+function save_hybrid_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol,
         petab_parameters_ids::Vector{Symbol};
         estimate_net_parameters::Bool = true,
         input_ids::Union{Nothing, Vector{Symbol}} = nothing)::Nothing
@@ -11,9 +11,28 @@ function save_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Sym
     inputs = get_inputs(input_ids)
     compute_llh = get_llh(llh_id, nn_models, ode_problem, measurements, inputs)
     llh = compute_llh(x)
-    save_solution_yaml(llh, nets_info, estimate_net_parameters, dir_save)
+    save_hybrid_yaml(llh, nets_info, estimate_net_parameters, dir_save)
     save_grad(x, compute_llh, nn_models, estimate_net_parameters, dir_save)
     save_simulations(x, llh_id, ode_problem, nn_models, measurements, inputs, dir_save)
+    return nothing
+end
+
+function save_initialization_test_values(
+        dir_save, nets_info::Dict, initializations_info::Dict)
+    nn_models = get_net_models(nets_info)
+    for (net_id, initialization_info) in initializations_info
+        net_ps = _get_net_parameters(nn_models, net_id, nets_info[net_id][:ps_file])
+        what_change = split(initialization_info[:what_change], '.')
+        if length(what_change) == 1
+            net_ps[Symbol(what_change[1])] .= initialization_info[:value]
+        else
+            layer_ps = @view net_ps[Symbol(what_change[1])]
+            layer_ps[Symbol(what_change[2])] .= initialization_info[:value]
+        end
+        nn_ps_to_h5(nn_models[net_id][2], net_ps, joinpath(dir_save, "$(net_id)_ref.hdf5"))
+    end
+
+    save_initialization_yaml(initializations_info, dir_save)
     return nothing
 end
 

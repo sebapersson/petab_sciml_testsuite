@@ -29,6 +29,6 @@ include(joinpath("test_values", "input.jl"))
 include("helper.jl")
 include("create_tests.jl")
 
-export save_test_values, create_petab_files
+export save_hybrid_test_values, save_initialization_test_values, create_petab_files
 
 end
