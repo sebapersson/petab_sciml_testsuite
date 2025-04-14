@@ -1,5 +1,5 @@
 function get_llh(llh_id::Symbol, nn_models, oprob::ODEProblem, measurements::DataFrame,
-                 inputs)::Function
+        inputs)::Function
     if llh_id == :UDE1
         llh = let _oprob = oprob, _measurements = measurements
             (x) -> llh_UDE1(x, _oprob, _measurements)
@@ -175,7 +175,7 @@ function llh_pre_ODE6(x, oprob::ODEProblem, nn_models, measurements::DataFrame):
 end
 
 function llh_pre_ODE6(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
-                      input_arrays)::Real
+        input_arrays)::Real
     mprey, mpredator, tsave = _get_measurement_info(measurements)
     st1, nn_model1 = nn_models[:net1]
     st2, nn_model2 = nn_models[:net2]
@@ -191,7 +191,7 @@ function llh_pre_ODE6(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
 end
 
 function llh_pre_ODE7(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
-                      inputs)::Real
+        inputs)::Real
     mprey, mpredator, tsave = _get_measurement_info(measurements)
     st, nn_model = nn_models[:net3]
     nnout = nn_model(inputs[1], x.net3, st)[1]
@@ -204,7 +204,7 @@ function llh_pre_ODE7(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
 end
 
 function llh_pre_ODE8(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
-                      inputs)::Real
+        inputs)::Real
     conds = ["cond1", "cond2"]
     st, nn_model = nn_models[:net3]
     llh = 0.0
@@ -339,21 +339,21 @@ function _get_measurement_info(measurements::DataFrame; cond = "")
 end
 
 function save_grad(x, llh::Function, nn_models::Dict, estimate_net_parameters::Bool,
-                   dir_save)::Nothing
+        dir_save)::Nothing
     grad = get_grad_llh(x, llh)
 
     # Non-neural net parameters
     i_mechanistic = findall(x -> x ∉ keys(nn_models), keys(x))
     grad_mechanistic = keys(grad)[i_mechanistic] .=> grad[i_mechanistic]
     df_mech = DataFrame(parameterId = first.(grad_mechanistic),
-                        value = last.(grad_mechanistic))
+        value = last.(grad_mechanistic))
     CSV.write(joinpath(dir_save, "grad_mech.tsv"), df_mech, delim = '\t')
 
     # Neural net parameters
     if estimate_net_parameters
         for net_id in keys(nn_models)
             nn_ps_to_h5(nn_models[net_id][2], grad[net_id],
-                        joinpath(dir_save, "grad_$(net_id).hdf5"))
+                joinpath(dir_save, "grad_$(net_id).hdf5"))
         end
     end
     return nothing

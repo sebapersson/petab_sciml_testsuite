@@ -4,8 +4,7 @@
 
 using PEtabSciMLTestsuite, Test, YAML
 
-const LLH_VALUES = (
-    "001" => 33.02909543616718,
+const LLH_VALUES = ("001" => 33.02909543616718,
     "002" => 33.30638150294612,
     "003" => 68.96494660053902,
     "004" => 33.30435713294598,
@@ -26,8 +25,11 @@ const LLH_VALUES = (
 
 # Build all hybrid tests and check that likelihood is consistent
 PEtabSciMLTestsuite.create_hybrid_tests()
-for (test_case, ref_value) in LLH_VALUES
-    path_solutions = joinpath(@__DIR__, "..", "test_cases", "hybrid", test_case, "solutions.yaml")
-    solutions = YAML.load_file(path_solutions)
-    @test solutions["llh"] ≈ ref_value
+@testset "llh hybrid tests" begin
+    for (test_case, ref_value) in LLH_VALUES
+        path_solutions = joinpath(@__DIR__, "..", "test_cases", "hybrid", test_case,
+            "solutions.yaml")
+        solutions = YAML.load_file(path_solutions)
+        @test solutions["llh"] ≈ ref_value
+    end
 end

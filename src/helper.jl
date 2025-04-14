@@ -3,22 +3,22 @@
 =#
 
 function write_yaml(dirsave, input_order_jl, input_order_py, output_order_jl,
-                    output_order_py; ps::Bool = true, dropout::Bool = false)::Nothing
+        output_order_py; ps::Bool = true, dropout::Bool = false)::Nothing
     solutions = Dict(:net_file => "net.yaml",
-                     :net_input => [
-                         "net_input_1.hdf5",
-                         "net_input_2.hdf5",
-                         "net_input_3.hdf5"
-                     ],
-                     :net_output => [
-                         "net_output_1.hdf5",
-                         "net_output_2.hdf5",
-                         "net_output_3.hdf5"
-                     ],
-                     :input_order_jl => input_order_jl,
-                     :input_order_py => input_order_py,
-                     :output_order_jl => output_order_jl,
-                     :output_order_py => output_order_py)
+        :net_input => [
+            "net_input_1.hdf5",
+            "net_input_2.hdf5",
+            "net_input_3.hdf5"
+        ],
+        :net_output => [
+            "net_output_1.hdf5",
+            "net_output_2.hdf5",
+            "net_output_3.hdf5"
+        ],
+        :input_order_jl => input_order_jl,
+        :input_order_py => input_order_py,
+        :output_order_jl => output_order_jl,
+        :output_order_py => output_order_py)
     if ps
         solutions[:net_ps] = ["net_ps_1.hdf5", "net_ps_2.hdf5", "net_ps_3.hdf5"]
     end
@@ -88,7 +88,7 @@ function set_ps_net!(ps::ComponentArray, path_h5::String, nn)::Nothing
 end
 
 function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray},
-                         layername::Symbol)::Nothing
+        layername::Symbol)::Nothing
     @unpack in_dims, out_dims, use_bias = layer
     g = HDF5.create_group(file, string(layername))
     _ps_weight_to_h5!(g, ps)
@@ -96,7 +96,7 @@ function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, Component
     return nothing
 end
 function layer_ps_to_h5!(file, layer::Lux.Conv, ps::Union{NamedTuple, ComponentArray},
-                         layername::Symbol)::Nothing
+        layername::Symbol)::Nothing
     @unpack kernel_size, use_bias, in_chs, out_chs = layer
     if length(kernel_size) == 1
         _psweigth = _reshape_array(ps.weight, [1 => 3, 2 => 2, 3 => 1])
@@ -124,7 +124,7 @@ function layer_ps_to_h5!(file, layer::Lux.Conv, ps::Union{NamedTuple, ComponentA
     return nothing
 end
 function layer_ps_to_h5!(file, layer::Lux.ConvTranspose,
-                         ps::Union{NamedTuple, ComponentArray}, layername::Symbol)::Nothing
+        ps::Union{NamedTuple, ComponentArray}, layername::Symbol)::Nothing
     @unpack kernel_size, use_bias, in_chs, out_chs = layer
     if length(kernel_size) == 1
         _psweigth = _reshape_array(ps.weight, [1 => 3, 2 => 2, 3 => 1])
@@ -142,7 +142,7 @@ function layer_ps_to_h5!(file, layer::Lux.ConvTranspose,
     return nothing
 end
 function layer_ps_to_h5!(file, layer::Lux.Bilinear, ps::Union{NamedTuple, ComponentArray},
-                         layername::Symbol)::Nothing
+        layername::Symbol)::Nothing
     @unpack in1_dims, in2_dims, out_dims, use_bias = layer
     g = HDF5.create_group(file, string(layername))
     _ps_weight_to_h5!(g, ps)
@@ -150,7 +150,7 @@ function layer_ps_to_h5!(file, layer::Lux.Bilinear, ps::Union{NamedTuple, Compon
     return nothing
 end
 function layer_ps_to_h5!(file, layer::Union{Lux.BatchNorm, Lux.InstanceNorm},
-                         ps::Union{NamedTuple, ComponentArray}, layername::Symbol)::Nothing
+        ps::Union{NamedTuple, ComponentArray}, layername::Symbol)::Nothing
     @unpack affine, chs = layer
     affine == false && return nothing
     g = HDF5.create_group(file, string(layername))
@@ -159,12 +159,12 @@ function layer_ps_to_h5!(file, layer::Union{Lux.BatchNorm, Lux.InstanceNorm},
     return nothing
 end
 function layer_ps_to_h5!(file, layer::LayerNorm, ps::Union{NamedTuple, ComponentArray},
-                         layername::Symbol)::Nothing
+        layername::Symbol)::Nothing
     @unpack shape, affine = layer
     affine == false && return DataFrame()
     if length(shape) == 4
         _psweigth = _reshape_array(ps.scale[:, :, :, :, 1],
-                                   [1 => 4, 2 => 3, 3 => 2, 4 => 1])
+            [1 => 4, 2 => 3, 3 => 2, 4 => 1])
         _psbias = _reshape_array(ps.bias[:, :, :, :, 1], [1 => 4, 2 => 3, 3 => 2, 4 => 1])
     elseif length(shape) == 3
         _psweigth = _reshape_array(ps.scale[:, :, :, 1], [1 => 3, 2 => 2, 3 => 1])
@@ -183,11 +183,11 @@ function layer_ps_to_h5!(file, layer::LayerNorm, ps::Union{NamedTuple, Component
     return nothing
 end
 function layer_ps_to_h5!(file,
-                         layer::Union{Lux.MaxPool, Lux.MeanPool, Lux.LPPool,
-                                      Lux.AdaptiveMaxPool, Lux.AdaptiveMeanPool,
-                                      Lux.FlattenLayer, Lux.Dropout, Lux.AlphaDropout},
-                         ::Union{NamedTuple, ComponentArray, Vector{<:AbstractFloat}},
-                         ::Symbol)::Nothing
+        layer::Union{Lux.MaxPool, Lux.MeanPool, Lux.LPPool,
+            Lux.AdaptiveMaxPool, Lux.AdaptiveMeanPool,
+            Lux.FlattenLayer, Lux.Dropout, Lux.AlphaDropout},
+        ::Union{NamedTuple, ComponentArray, Vector{<:AbstractFloat}},
+        ::Symbol)::Nothing
     return nothing
 end
 
