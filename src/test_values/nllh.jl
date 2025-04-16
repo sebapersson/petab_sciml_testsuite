@@ -2,12 +2,17 @@ function get_llh(llh_id::Symbol, nn_models, oprob::ODEProblem, measurements::Dat
         inputs)::Function
     if llh_id == :UDE1
         llh = let _oprob = oprob, _measurements = measurements
-            (x) -> llh_UDE1(x, _oprob, _measurements)
+            (x) -> llh_UDE(x, _oprob, _measurements)
         end
     end
     if llh_id == :UDE2
         llh = let _oprob = oprob, _measurements = measurements
-            (x) -> llh_UDE2(x, _oprob, _measurements)
+            (x) -> llh_UDE(x, _oprob, _measurements)
+        end
+    end
+    if llh_id == :UDE3
+        llh = let _oprob = oprob, _measurements = measurements
+            (x) -> llh_UDE(x, _oprob, _measurements)
         end
     end
     if llh_id == :pre_ODE1
@@ -50,6 +55,11 @@ function get_llh(llh_id::Symbol, nn_models, oprob::ODEProblem, measurements::Dat
             (x) -> llh_pre_ODE8(x, _oprob, _nn_models, _measurements, inputs)
         end
     end
+    if llh_id == :pre_ODE9
+        llh = let _nn_models = nn_models, _oprob = oprob, _measurements = measurements
+            (x) -> llh_pre_ODE9(x, _oprob, _nn_models, _measurements)
+        end
+    end
     if llh_id == :OBS1
         llh = let _nn_models = nn_models, _oprob = oprob, _measurements = measurements
             (x) -> llh_OBS1(x, _oprob, _nn_models, _measurements)
@@ -58,6 +68,11 @@ function get_llh(llh_id::Symbol, nn_models, oprob::ODEProblem, measurements::Dat
     if llh_id == :OBS2
         llh = let _nn_models = nn_models, _oprob = oprob, _measurements = measurements
             (x) -> llh_OBS2(x, _oprob, _nn_models, _measurements)
+        end
+    end
+    if llh_id == :OBS3
+        llh = let _nn_models = nn_models, _oprob = oprob, _measurements = measurements
+            (x) -> llh_OBS3(x, _oprob, _nn_models, _measurements)
         end
     end
     if llh_id == :COMBO1
@@ -75,17 +90,15 @@ function get_llh(llh_id::Symbol, nn_models, oprob::ODEProblem, measurements::Dat
             (x) -> llh_COMBO3(x, _oprob, _nn_models, _measurements)
         end
     end
+    if llh_id == :COMBO4
+        llh = let _nn_models = nn_models, _oprob = oprob, _measurements = measurements
+            (x) -> llh_COMBO4(x, _oprob, _nn_models, _measurements)
+        end
+    end
     return llh
 end
 
-function llh_UDE1(x, oprob::ODEProblem, measurements::DataFrame)::Real
-    mprey, mpredator, tsave = _get_measurement_info(measurements)
-    _oprob = remake(oprob, p = x)
-    sol = solve(_oprob, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = tsave)
-    return _llh1(sol, mprey, mpredator)
-end
-
-function llh_UDE2(x, oprob::ODEProblem, measurements::DataFrame)::Real
+function llh_UDE(x, oprob::ODEProblem, measurements::DataFrame)::Real
     mprey, mpredator, tsave = _get_measurement_info(measurements)
     _oprob = remake(oprob, p = x)
     sol = solve(_oprob, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = tsave)
@@ -221,6 +234,20 @@ function llh_pre_ODE8(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
     return llh
 end
 
+function llh_pre_ODE9(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Real
+    mprey, mpredator, tsave = _get_measurement_info(measurements)
+    st, nn_model = nn_models[:net4]
+    nnout = nn_model([1.0, 1.0], x.net4, st)[1]
+    _p = convert.(eltype(x), ComponentArray(oprob.p))
+    _p.delta = x.delta
+    _p.beta = x.beta
+    _p.alpha = nnout[1]
+    _p.gamma = nnout[2]
+    _oprob = remake(oprob, p = _p)
+    sol = solve(_oprob, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = tsave)
+    return _llh1(sol, mprey, mpredator)
+end
+
 function llh_OBS1(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Real
     mprey, mpredator, tsave = _get_measurement_info(measurements)
     _oprob = remake(oprob, p = x)
@@ -233,6 +260,13 @@ function llh_OBS2(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Rea
     _oprob = remake(oprob, p = x)
     sol = solve(_oprob, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = tsave)
     return _llh3(sol, mprey, mpredator, x, nn_models)
+end
+
+function llh_OBS3(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Real
+    mprey, mpredator, tsave = _get_measurement_info(measurements)
+    _oprob = remake(oprob, p = x)
+    sol = solve(_oprob, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = tsave)
+    return _llh6(sol, mprey, mpredator, x, nn_models)
 end
 
 function llh_COMBO1(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Real
@@ -270,6 +304,16 @@ function llh_COMBO3(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::R
     _oprob = remake(oprob, p = _p)
     sol = solve(_oprob, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = tsave)
     return _llh4(sol, mprey, mpredator, x, nn_models)
+end
+
+function llh_COMBO4(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Real
+    mprey, mpredator, tsave = _get_measurement_info(measurements)
+    _p = convert.(eltype(x), ComponentArray(oprob.p))
+    _p[1:3] .= x[1:3]
+    _p.net4 .= x.net4
+    _oprob = remake(oprob, p = _p)
+    sol = solve(_oprob, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = tsave)
+    return _llh5(sol, mprey, mpredator, x, nn_models)
 end
 
 function _llh1(sol::ODESolution, mprey, mpredator)
@@ -323,6 +367,35 @@ function _llh4(sol::ODESolution, mprey, mpredator, x, nn_models)
     end
     for i in eachindex(mpredator)
         model_output = nn_model2([x.alpha, predator[i]], x.net2, st2)[1][1]
+        nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mpredator[i] - model_output)^2 / σ^2
+    end
+    return nllh * -1
+end
+
+function _llh5(sol::ODESolution, mprey, mpredator, x, nn_models)
+    prey, predator = sol[1, :], sol[2, :]
+    st4, nn_model4 = nn_models[:net4]
+    nllh, σ = 0.0, 0.05
+    for i in eachindex(mprey)
+        model_output = nn_model4([prey[i], predator[i]], x.net4, st4)[1][1]
+        nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mprey[i] - model_output)^2 / σ^2
+    end
+    for i in eachindex(mpredator)
+        nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mpredator[i] - predator[i])^2 / σ^2
+    end
+    return nllh * -1
+end
+
+function _llh6(sol::ODESolution, mprey, mpredator, x, nn_models)
+    prey, predator = sol[1, :], sol[2, :]
+    st4, nn_model4 = nn_models[:net4]
+    nllh, σ = 0.0, 0.05
+    for i in eachindex(mprey)
+        model_output = nn_model4([prey[i], predator[i]], x.net4, st4)[1][1]
+        nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mprey[i] - model_output)^2 / σ^2
+    end
+    for i in eachindex(mpredator)
+        model_output = nn_model4([prey[i], predator[i]], x.net4, st4)[1][2]
         nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mpredator[i] - model_output)^2 / σ^2
     end
     return nllh * -1

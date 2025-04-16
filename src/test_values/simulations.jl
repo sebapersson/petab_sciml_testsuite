@@ -9,7 +9,7 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
         measurements::DataFrame, inputs)
     simulations = deepcopy(measurements)
 
-    if llh_id in [:UDE1, :UDE2]
+    if llh_id in [:UDE1, :UDE2, :UDE3]
         _ode_problem = remake(ode_problem, p = x)
         sol = solve(_ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
             saveat = unique(measurements.time))
@@ -92,6 +92,15 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
         simulated_values = vcat(sol1[1, :], sol1[2, :], sol2[1, :], sol2[2, :])
     end
 
+    if llh_id == :pre_ODE9
+        st, nn_model = nn_models[:net4]
+        nnout = nn_model([1.0, 1.0], x.net4, st)[1]
+        p = (alpha = nnout[1], delta = 1.8, beta = 0.9, gamma = nnout[2])
+        _ode_problem = remake(ode_problem, p = p)
+        sol = solve(_ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = unique(measurements.time))
+        simulated_values = vcat(sol[1, :], sol[2, :])
+    end
+
     if llh_id == :OBS1
         st, nn_model = nn_models[:net1]
         sol = solve(ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
@@ -108,6 +117,15 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
         prey = [nn_model1(sol[:, i], x.net1, st1)[1][1] for i in eachindex(sol.t)]
         predator = [nn_model2(sol[:, i], x.net2, st2)[1][1] for i in eachindex(sol.t)]
         simulated_values = vcat(prey, sol[2, :])
+    end
+
+    if llh_id == :OBS3
+        st4, nn_model4 = nn_models[:net4]
+        sol = solve(ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
+            saveat = unique(measurements.time))
+        prey = [nn_model4(sol[:, i], x.net4, st4)[1][1] for i in eachindex(sol.t)]
+        predator = [nn_model4(sol[:, i], x.net4, st4)[1][2] for i in eachindex(sol.t)]
+        simulated_values = vcat(prey, predator)
     end
 
     if llh_id == :COMBO1
@@ -139,6 +157,17 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
         α = x.alpha
         predator = [nn_model2([α, sol[2, i]], x.net2, st2)[1][1] for i in eachindex(sol.t)]
         simulated_values = vcat(sol[1, :], predator)
+    end
+
+    if llh_id == :COMBO4
+        st4, nn_model4 = nn_models[:net4]
+        p = (alpha = 1.3, delta = 1.8, beta = 0.9, net4 = x.net4)
+        _ode_problem = remake(ode_problem, p = p)
+        sol = solve(_ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
+            saveat = unique(measurements.time))
+        α = x.alpha
+        prey = [nn_model4(sol[:, i], x.net4, st4)[1][1] for i in eachindex(sol.t)]
+        simulated_values = vcat(prey, sol[2, :])
     end
 
     rename!(simulations, "measurement" => "simulation")

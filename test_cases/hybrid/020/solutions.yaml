@@ -1,0 +1,9 @@
+simulation_files:
+  - "simulations.tsv"
+grad_files:
+  mech: "grad_mech.tsv"
+  net4: "grad_net4.hdf5"
+llh: 32.79546538522818
+tol_grad_llh: 0.1
+tol_simulations: 0.001
+tol_llh: 0.001
