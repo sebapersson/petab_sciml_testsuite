@@ -4,7 +4,7 @@ nets_info = Dict(:net4 => Dict(:ps_file => "net4_COMBO1_ps.hdf5", :static => fal
 ode_id = :UDE1
 llh_id = :COMBO4
 condition_table_id = :Table1
-observable_table_id = :Table4
+observable_table_id = :Table2
 sbml_id = :lv_UDE1
 petab_parameters_ids = [:alpha, :delta, :beta]
 # Mapping and hybridization generally differ between tests and must thus be hand-coded
@@ -12,7 +12,7 @@ mapping_table = DataFrame(
     petabEntityId = [
         "net4_input1",
         "net4_input2",
-        "net4_output1",
+        "net1_output1",
         "net4_output2",
         "net4_ps"
     ],

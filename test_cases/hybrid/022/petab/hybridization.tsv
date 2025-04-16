@@ -1,3 +1,4 @@
 targetId	targetValue
-alpha	net4_output1
+net4_input1	prey
+net4_input2	predator
 gamma	net4_output2

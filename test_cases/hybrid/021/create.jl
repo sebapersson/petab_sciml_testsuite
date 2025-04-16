@@ -25,12 +25,12 @@ mapping_table = DataFrame(
     ])
 hybridization_table = DataFrame(
     targetId = [
-        "net4_output1",
-        "net4_output2"
-    ],
-    targetValue = [
         "alpha",
         "gamma"
+    ],
+    targetValue = [
+        "net4_output1",
+        "net4_output2"
     ])
 
 save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)
