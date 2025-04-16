@@ -97,7 +97,8 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
         nnout = nn_model([1.0, 1.0], x.net4, st)[1]
         p = (alpha = nnout[1], delta = 1.8, beta = 0.9, gamma = nnout[2])
         _ode_problem = remake(ode_problem, p = p)
-        sol = solve(_ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = unique(measurements.time))
+        sol = solve(_ode_problem, Vern9(), abstol = 1e-12,
+            reltol = 1e-12, saveat = unique(measurements.time))
         simulated_values = vcat(sol[1, :], sol[2, :])
     end
 

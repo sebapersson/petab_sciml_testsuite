@@ -40,7 +40,7 @@ function get_odeproblem(ode_id::Symbol, nn_models::Dict)
         end
         p_mechanistic = (delta = 1.8, beta = 0.9)
         pnn4 = Lux.initialparameters(rng, nn_models[:net4][2])
-        p_ode = ComponentArray(merge(p_mechanistic, (net4 = pnn4, )))
+        p_ode = ComponentArray(merge(p_mechanistic, (net4 = pnn4,)))
         u0 = [0.44249296, 4.6280594]
         return ODEProblem(lv!, u0, (0.0, 10.0), p_ode)
     end

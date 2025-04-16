@@ -14,23 +14,21 @@ mapping_table = DataFrame(
         "net4_input2",
         "net4_output1",
         "net4_output2",
-        "net4_ps",
+        "net4_ps"
     ],
     modelEntityId = [
         "net4.inputs[0][0]",
         "net4.inputs[0][1]",
         "net4.outputs[0][0]",
         "net4.outputs[0][1]",
-        "net4.parameters",
+        "net4.parameters"
     ])
 hybridization_table = DataFrame(
     targetId = [
         "net4_input1",
         "net4_input2",
         "alpha",
-        "gamma"
-
-    ],
+        "gamma"],
     targetValue = [
         "prey",
         "predator",
