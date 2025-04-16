@@ -13,17 +13,18 @@ problems:
       - "mapping.tsv"
 format_version: 2
 extensions:
-  array_files:
-    input_file1:
-      location: "input1.hdf5"
-      format: "HDF5"
-    net3_ps_file:
-      location: "net3_ps.hdf5"
-      format: "HDF5"
-  hybridization_file: "hybridization.tsv"
-  neural_nets:
-    net3:
-      location: "net3.yaml"
-      static: true
-      format: "YAML"
+  sciml:
+    array_files:
+      input_file1:
+        location: "input1.hdf5"
+        format: "HDF5"
+      net3_ps_file:
+        location: "net3_ps.hdf5"
+        format: "HDF5"
+    hybridization_file: "hybridization.tsv"
+    neural_nets:
+      net3:
+        location: "net3.yaml"
+        static: true
+        format: "YAML"
 parameter_file: "parameters.tsv"

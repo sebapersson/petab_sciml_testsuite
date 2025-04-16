@@ -13,14 +13,15 @@ problems:
       - "mapping.tsv"
 format_version: 2
 extensions:
-  array_files:
-    net4_ps_file:
-      location: "net4_ps.hdf5"
-      format: "HDF5"
-  hybridization_file: "hybridization.tsv"
-  neural_nets:
-    net4:
-      location: "net4.yaml"
-      static: true
-      format: "YAML"
+  sciml:
+    array_files:
+      net4_ps_file:
+        location: "net4_ps.hdf5"
+        format: "HDF5"
+    hybridization_file: "hybridization.tsv"
+    neural_nets:
+      net4:
+        location: "net4.yaml"
+        static: true
+        format: "YAML"
 parameter_file: "parameters.tsv"

@@ -65,3 +65,12 @@ function create_hybrid_tests()
         include(joinpath(dir_tests, test_case, "create.jl"))
     end
 end
+
+function create_initialization_tests()
+    dir_tests = joinpath(@__DIR__, "..", "test_cases", "initialization")
+    test_cases = filter(x -> x != "README.md", readdir(dir_tests))
+    for test_case in test_cases
+        @info "Initialization test-case $(test_case)"
+        include(joinpath(dir_tests, test_case, "create.jl"))
+    end
+end

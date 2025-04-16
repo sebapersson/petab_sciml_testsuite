@@ -29,7 +29,7 @@ function save_petab_yaml(nets_info::Dict, dir_petab,
         end
     end
 
-    yaml_dict[:extensions] = ext
+    yaml_dict[:extensions] = Dict(:sciml => ext)
     YAML.write_file(joinpath(dir_petab, "problem.yaml"), yaml_dict)
     return nothing
 end
