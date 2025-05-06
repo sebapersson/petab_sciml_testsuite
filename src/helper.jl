@@ -63,7 +63,8 @@ function save_ps(dirsave, i::Integer, nn_model, ps)::Nothing
     return nothing
 end
 
-function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple}, freeze_info::Union{Nothing, Dict}, path::String)::Nothing
+function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple},
+        freeze_info::Union{Nothing, Dict}, path::String)::Nothing
     if isfile(path)
         rm(path)
     end
@@ -92,14 +93,16 @@ function set_ps_net!(ps::ComponentArray, path_h5::String, nn)::Nothing
     return nothing
 end
 
-function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray}, layername::Symbol)::Nothing
+function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray},
+        layername::Symbol)::Nothing
     @unpack in_dims, out_dims, use_bias = layer
     g = HDF5.create_group(file, string(layername))
     _ps_weight_to_h5!(g, ps)
     _ps_bias_to_h5!(g, ps, use_bias)
     return nothing
 end
-function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray}, layername::Symbol, freeze_info::Dict)::Nothing
+function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray},
+        layername::Symbol, freeze_info::Dict)::Nothing
     @unpack in_dims, out_dims, use_bias = layer
     g = HDF5.create_group(file, string(layername))
     if !(:weight in freeze_info[layername])

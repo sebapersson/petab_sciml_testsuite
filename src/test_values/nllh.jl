@@ -425,7 +425,8 @@ function save_grad(x, llh::Function, nn_models::Dict, estimate_net_parameters::B
     # Neural net parameters
     if estimate_net_parameters
         for net_id in keys(nn_models)
-            nn_ps_to_h5(nn_models[net_id][2], grad[net_id], freeze_info, joinpath(dir_save, "grad_$(net_id).hdf5"))
+            nn_ps_to_h5(nn_models[net_id][2], grad[net_id], freeze_info,
+                joinpath(dir_save, "grad_$(net_id).hdf5"))
         end
     end
     return nothing
