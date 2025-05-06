@@ -59,17 +59,22 @@ function save_io(dirsave, i::Integer, input, order_jl, order_py, iotype::Symbol)
 end
 
 function save_ps(dirsave, i::Integer, nn_model, ps)::Nothing
-    nn_ps_to_h5(nn_model, ps, joinpath(dirsave, "net_ps_$i.hdf5"))
+    nn_ps_to_h5(nn_model, ps, nothing, joinpath(dirsave, "net_ps_$i.hdf5"))
     return nothing
 end
 
-function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple}, path::String)::Nothing
+function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple}, freeze_info::Union{Nothing, Dict}, path::String)::Nothing
     if isfile(path)
         rm(path)
     end
     file = HDF5.h5open(path, "w")
     for (layername, layer) in pairs(nn.layers)
-        layer_ps_to_h5!(file, layer, ps[layername], layername)
+        if isnothing(freeze_info) || !haskey(freeze_info, layername)
+            layer_ps_to_h5!(file, layer, ps[layername], layername)
+        else
+            @assert layer isa Lux.Dense "Layer freezing only implemented for Lux.Dense yet"
+            layer_ps_to_h5!(file, layer, ps[layername], layername, freeze_info)
+        end
     end
     close(file)
     return nothing
@@ -87,12 +92,26 @@ function set_ps_net!(ps::ComponentArray, path_h5::String, nn)::Nothing
     return nothing
 end
 
-function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray},
-        layername::Symbol)::Nothing
+function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray}, layername::Symbol)::Nothing
     @unpack in_dims, out_dims, use_bias = layer
     g = HDF5.create_group(file, string(layername))
     _ps_weight_to_h5!(g, ps)
     _ps_bias_to_h5!(g, ps, use_bias)
+    return nothing
+end
+function layer_ps_to_h5!(file, layer::Lux.Dense, ps::Union{NamedTuple, ComponentArray}, layername::Symbol, freeze_info::Dict)::Nothing
+    @unpack in_dims, out_dims, use_bias = layer
+    g = HDF5.create_group(file, string(layername))
+    if !(:weight in freeze_info[layername])
+        _ps_weight_to_h5!(g, ps)
+    else
+        g["weight"] = Float64[]
+    end
+    if !(:bias in freeze_info[layername])
+        _ps_bias_to_h5!(g, ps, use_bias)
+    else
+        g["bias"] = Float64[]
+    end
     return nothing
 end
 function layer_ps_to_h5!(file, layer::Lux.Conv, ps::Union{NamedTuple, ComponentArray},
