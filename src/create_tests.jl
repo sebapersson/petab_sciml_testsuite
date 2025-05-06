@@ -1,7 +1,7 @@
 function save_hybrid_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol,
-        petab_parameters_ids::Vector{Symbol};
-        estimate_net_parameters::Bool = true,
-        input_ids::Union{Nothing, Vector{Symbol}} = nothing)::Nothing
+        petab_parameters_ids::Vector{Symbol}; estimate_net_parameters::Bool = true,
+        input_ids::Union{Nothing, Vector{Symbol}} = nothing,
+        freeze_info::Union{Nothing, Dict} = nothing)::Nothing
     nn_models = get_net_models(nets_info)
     measurements = get_measurements(llh_id)
     ode_problem = get_odeproblem(ode_id, nn_models)
@@ -12,7 +12,7 @@ function save_hybrid_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_
     compute_llh = get_llh(llh_id, nn_models, ode_problem, measurements, inputs)
     llh = compute_llh(x)
     save_hybrid_yaml(llh, nets_info, estimate_net_parameters, dir_save)
-    save_grad(x, compute_llh, nn_models, estimate_net_parameters, dir_save)
+    save_grad(x, compute_llh, nn_models, estimate_net_parameters, freeze_info, dir_save)
     save_simulations(x, llh_id, ode_problem, nn_models, measurements, inputs, dir_save)
     return nothing
 end
