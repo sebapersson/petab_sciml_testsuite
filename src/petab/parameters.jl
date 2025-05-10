@@ -75,6 +75,13 @@ const NET1_LAYER1_FREEZE = DataFrame(parameterId = "net1_layer1",
     nominalValue = "net1_ps_file",
     estimate = 0)
 
+const NET1_LAYER1_WEIGHT_FREEZE = DataFrame(parameterId = "net1_layer1_weight",
+    parameterScale = "lin",
+    lowerBound = "-inf",
+    upperBound = "inf",
+    nominalValue = "net1_ps_file",
+    estimate = 0)
+
 function save_parameters_table(petab_parameters_ids::Vector{Symbol}, nets_info::Dict,
         estimate_net_parameters::Bool, dir_petab)
     df_mech = DataFrame()
@@ -135,6 +142,9 @@ function _get_parameter_info(id::Symbol, what_return::Symbol)
     end
     if id == :net1_layer1_freeze
         info = NET1_LAYER1_FREEZE
+    end
+    if id == :net1_layer1_weight_freeze
+        info = NET1_LAYER1_WEIGHT_FREEZE
     end
 
     what_return == :DataFrame && return info
