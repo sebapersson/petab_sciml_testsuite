@@ -6,7 +6,8 @@ llh_id = :pre_ODE1
 condition_table_id = :Table1
 observable_table_id = :Table1
 sbml_id = :lv_reference
-petab_parameters_ids = [:alpha, :delta, :beta, :net1_input_pre1, :net1_input_pre2, :net1_layer1_weight_freeze]
+petab_parameters_ids = [
+    :alpha, :delta, :beta, :net1_input_pre1, :net1_input_pre2, :net1_layer1_weight_freeze]
 freeze_info = Dict(:layer1 => [:weight])
 # Mapping and hybridization generally differ between tests and must thus be hand-coded
 mapping_table = DataFrame(
