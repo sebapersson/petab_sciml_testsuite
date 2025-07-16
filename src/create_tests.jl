@@ -77,7 +77,7 @@ end
 
 function create_net_import_tests()
     dir_tests = joinpath(@__DIR__, "..", "test_cases", "net_import")
-    test_cases = filter(x -> x != "README.md", readdir(dir_tests))
+    test_cases = filter(!(x -> x in ["README.md", "helper.py"]), readdir(dir_tests))
     for test_case in test_cases
         @info "Net-import test-case $(test_case)"
         include(joinpath(dir_tests, test_case, "create_testdata", "net.jl"))

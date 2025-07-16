@@ -1,8 +1,9 @@
-import torch
-import torch.nn as nn
-import os
+"""Neural network import test generation"""
 
-from src.python.helper import make_yaml, test_nn
+import os
+import torch
+from torch import nn
+from test_cases.net_import.helper import make_yaml, test_nn
 
 class Net(nn.Module):
     """Example network.
@@ -20,8 +21,8 @@ class Net(nn.Module):
         self.fc3 = nn.Linear(84, 10)
         self.flatten1 = nn.Flatten()
 
-    def forward(self, input: torch.Tensor) -> torch.Tensor:
-        c1 = self.conv1(input)
+    def forward(self, net_input: torch.Tensor) -> torch.Tensor:
+        c1 = self.conv1(net_input)
         s2 = self.max_pool1(c1)
         c3 = self.conv2(s2)
         s4 = self.max_pool1(c3)

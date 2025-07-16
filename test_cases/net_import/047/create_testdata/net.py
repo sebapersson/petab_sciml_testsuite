@@ -1,8 +1,10 @@
-import torch
-import torch.nn as nn
-import os
+"""Neural network import test generation"""
 
-from src.python.helper import make_yaml, test_nn
+import os
+import torch
+from torch import nn
+from torch.nn import functional as F
+from test_cases.net_import.helper import make_yaml, test_nn
 
 class Net(nn.Module):
     def __init__(self) -> None:
@@ -12,8 +14,8 @@ class Net(nn.Module):
         self.layer1 = nn.Conv2d(3, 4, 5)
         self.layer2 = nn.Conv2d(4, 1, 5)
 
-    def forward(self, input: torch.Tensor) -> torch.Tensor:
-        x = self.norm1(input)
+    def forward(self, net_input: torch.Tensor) -> torch.Tensor:
+        x = self.norm1(net_input)
         x = self.layer1(x)
         x = self.norm2(x)
         x = self.layer2(x)

@@ -1,17 +1,17 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import os
+"""Neural network import test generation"""
 
-from src.python.helper import make_yaml, test_nn
+import os
+import torch
+from torch import nn
+from test_cases.net_import.helper import make_yaml, test_nn
 
 class Net(nn.Module):
     def __init__(self) -> None:
         super().__init__()
         self.flatten1 = nn.Flatten()
 
-    def forward(self, input: torch.Tensor) -> torch.Tensor:
-        x = self.flatten1(input)
+    def forward(self, net_input: torch.Tensor) -> torch.Tensor:
+        x = self.flatten1(net_input)
         return x
 
 # Create a pytorch module, convert it to PEtab SciML, then save it to disk.
