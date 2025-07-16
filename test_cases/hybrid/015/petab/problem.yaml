@@ -15,16 +15,11 @@ format_version: 2
 extensions:
   sciml:
     array_files:
-      input_file1:
-        location: "input1.hdf5"
-        format: "HDF5"
-      net3_ps_file:
-        location: "net3_ps.hdf5"
-        format: "HDF5"
-      input_file2:
-        location: "input2.hdf5"
-        format: "HDF5"
-    hybridization_file: "hybridization.tsv"
+      - "net3_ps.hdf5"
+      - "input1.hdf5"
+      - "input2.hdf5"
+    hybridization_files:
+      - "hybridization.tsv"
     neural_nets:
       net3:
         location: "net3.yaml"

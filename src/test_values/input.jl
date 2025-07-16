@@ -7,7 +7,9 @@ function get_inputs(input_ids::Vector{Symbol})
         end
         # Ensure Julia indexing
         path = joinpath(@__DIR__, "..", "..", "assets", "inputs", "$(input_id).hdf5")
-        __input_data = HDF5.h5read(path, "input1")
+        input_file = HDF5.h5open(path, "r")
+        __input_data = HDF5.read_dataset(input_file["inputs"]["input0"], "data")
+        close(input_file)
         map_input = _get_input_map(order_jl, order_py)
         _input_data = permutedims(__input_data, reverse(1:ndims(__input_data)))
         _input_data = _reshape_array(_input_data, map_input)

@@ -91,12 +91,12 @@ function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple}, freeze_info::Uni
     return nothing
 end
 
-function set_ps_net!(ps::ComponentArray, path_h5::String, nn)::Nothing
+function set_ps_net!(ps::ComponentArray, path_h5::String, nn, net_id::Symbol)::Nothing
     file = HDF5.h5open(path_h5, "r")
     for (layerid, layer) in pairs(nn.layers)
         ps_layer = ps[layerid]
         isempty(ps_layer) && continue
-        _set_ps_layer!(ps_layer, layer, file[string(layerid)])
+        _set_ps_layer!(ps_layer, layer, file["parameters"]["$(net_id)"]["$layerid"])
         ps[layerid] = ps_layer
     end
     close(file)
