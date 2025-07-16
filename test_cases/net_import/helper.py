@@ -1,5 +1,5 @@
-import torch
 import os
+import torch
 import h5py
 
 from petab_sciml.standard import Input, NNModel, NNModelStandard
@@ -34,7 +34,7 @@ def test_nn(net, dir_save, layer_names, dropout=False, atol=1e-3):
         output_h5 = h5py.File(os.path.join(dir_save, "net_output_" + str(i) + ".hdf5"), "r")
         input = torch.from_numpy(input_h5["inputs"]["input0"]["data"][:])
         output_ref = torch.from_numpy(output_h5["outputs"]["output0"]["data"][:])
-        if dropout == False:
+        if dropout is False:
             output = net.forward(input)
         else:
             output = torch.zeros_like(output_ref)
