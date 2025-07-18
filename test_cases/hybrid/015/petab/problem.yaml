@@ -16,8 +16,7 @@ extensions:
   sciml:
     array_files:
       - "net3_ps.hdf5"
-      - "input1.hdf5"
-      - "input2.hdf5"
+      - "net3_input2.hdf5"
     hybridization_files:
       - "hybridization.tsv"
     neural_nets:

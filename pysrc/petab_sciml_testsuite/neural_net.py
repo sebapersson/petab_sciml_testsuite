@@ -42,7 +42,7 @@ class Net2(nn.Module):
 class Net3(nn.Module):
     def __init__(self) -> None:
         super().__init__()
-        self.layer1 = nn.Conv2d(5, 5, 3, 1)
+        self.layer1 = nn.Conv2d(3, 1, (5, 5))
         self.layer2 = nn.Flatten()
         self.layer3 = nn.Linear(36, 1)
 

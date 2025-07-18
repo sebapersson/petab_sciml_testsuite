@@ -72,14 +72,14 @@ const NET1_LAYER1_FREEZE = DataFrame(parameterId = "net1_layer1",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
-    nominalValue = "net1_ps_file",
+    nominalValue = missing,
     estimate = 0)
 
 const NET1_LAYER1_WEIGHT_FREEZE = DataFrame(parameterId = "net1_layer1_weight",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
-    nominalValue = "net1_ps_file",
+    nominalValue = missing,
     estimate = 0)
 
 function save_parameters_table(petab_parameters_ids::Vector{Symbol}, nets_info::Dict,

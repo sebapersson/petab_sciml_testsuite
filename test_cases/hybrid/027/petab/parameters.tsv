@@ -4,5 +4,5 @@ delta	lin	0.0	15.0	1.8	1
 beta	lin	0.0	15.0	0.9	1
 net1_input_pre1	lin	-inf	inf	1.0	0
 net1_input_pre2	lin	-inf	inf	1.0	0
-net1_layer1_weight	lin	-inf	inf	net1_ps_file	0
+net1_layer1_weight	lin	-inf	inf		0
 net1_ps	lin	-inf	inf	net1_ps_file	1

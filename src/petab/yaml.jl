@@ -1,5 +1,5 @@
 function save_petab_yaml(nets_info::Dict, dir_petab,
-        input_ids::Union{Nothing, Vector{Symbol}})
+        input_file_id::Union{Nothing, Symbol})
     yaml_dict = Dict(:format_version => 2,
         :parameter_file => "parameters.tsv",
         :problems => [
@@ -19,10 +19,8 @@ function save_petab_yaml(nets_info::Dict, dir_petab,
             :static => net_info[:static])
         push!(ext[:array_files], "$(net_id)_ps.hdf5")
     end
-    if !isnothing(input_ids)
-        for i in eachindex(input_ids)
-            push!(ext[:array_files], "input$i.hdf5")
-        end
+    if !isnothing(input_file_id)
+        push!(ext[:array_files], "$(input_file_id).hdf5")
     end
 
     yaml_dict[:extensions] = Dict(:sciml => ext)

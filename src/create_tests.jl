@@ -1,6 +1,6 @@
 function save_hybrid_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol,
         petab_parameters_ids::Vector{Symbol}; estimate_net_parameters::Bool = true,
-        input_ids::Union{Nothing, Vector{Symbol}} = nothing,
+        input_file_id::Union{Nothing, Symbol} = nothing,
         freeze_info::Union{Nothing, Dict} = nothing)::Nothing
     nn_models = get_net_models(nets_info)
     measurements = get_measurements(llh_id)
@@ -8,7 +8,7 @@ function save_hybrid_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_
     net_parameters = get_net_parameters(nn_models, nets_info)
 
     x = get_x(petab_parameters_ids, net_parameters, nets_info)
-    inputs = get_inputs(input_ids)
+    inputs = get_inputs(input_file_id)
     compute_llh = get_llh(llh_id, nn_models, ode_problem, measurements, inputs)
     llh = compute_llh(x)
     save_hybrid_yaml(llh, nets_info, estimate_net_parameters, dir_save)
@@ -41,7 +41,7 @@ function create_petab_files(dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::
         condition_table_id::Symbol, observable_table_id::Symbol,
         mapping_table::DataFrame, hybridization_table::DataFrame;
         estimate_net_parameters::Bool = true,
-        input_ids::Union{Nothing, Vector{Symbol}} = nothing)::Nothing
+        input_file_id::Union{Nothing, Symbol} = nothing)::Nothing
     dir_petab = joinpath(dir_test, "petab")
     save_sbml(sbml_id, dir_petab)
     save_parameters_table(petab_parameters_ids, nets_info, estimate_net_parameters,
@@ -51,7 +51,8 @@ function create_petab_files(dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::
     save_observables_table(observable_table_id, dir_petab)
     save_net_parameters(nets_info, dir_petab)
     save_net_yaml(nets_info, dir_petab)
-    save_petab_yaml(nets_info, dir_petab, input_ids)
+    save_net_inputs(input_file_id, dir_petab)
+    save_petab_yaml(nets_info, dir_petab, input_file_id)
     CSV.write(joinpath(dir_petab, "mapping.tsv"), mapping_table, delim = '\t')
     CSV.write(joinpath(dir_petab, "hybridization.tsv"), hybridization_table, delim = '\t')
     return nothing
