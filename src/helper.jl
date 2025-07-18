@@ -68,7 +68,8 @@ function save_ps(dirsave, i::Integer, nn_model, netid::Symbol, ps)::Nothing
     return nothing
 end
 
-function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple}, freeze_info::Union{Nothing, Dict}, netid::Symbol, path::String)::Nothing
+function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple},
+        freeze_info::Union{Nothing, Dict}, netid::Symbol, path::String)::Nothing
     if isfile(path)
         rm(path)
     end

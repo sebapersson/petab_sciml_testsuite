@@ -2,7 +2,7 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(layer1 = LPPool((1, 2, 3); p = 2)) do x
+nn_model = @compact(layer1=LPPool((1, 2, 3); p = 2)) do x
     out = layer1(x)
     @return out
 end

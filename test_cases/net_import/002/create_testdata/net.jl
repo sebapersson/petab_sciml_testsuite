@@ -3,7 +3,7 @@ using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
 nn_model = @compact(layer1=Dense(2, 5),
     layer2=Dense(2, 10),
-    layer3=Bilinear((5, 10)=>2)) do x
+    layer3=Bilinear((5, 10) => 2)) do x
     x1 = layer1(x)
     x2 = layer2(x)
     out = layer3((x1, x2))
