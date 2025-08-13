@@ -91,9 +91,8 @@ function save_parameters_table(petab_parameters_ids::Vector{Symbol}, nets_info::
 
     _net_ids = collect(keys(nets_info))
     net_ids = @. string(_net_ids) * "_ps"
-    net_files = @. string(_net_ids) * "_ps_file"
     df_nn = DataFrame(parameterId = net_ids, parameterScale = :lin, lowerBound = "-inf",
-        upperBound = "inf", nominalValue = net_files,
+        upperBound = "inf", nominalValue = missing,
         estimate = Int(estimate_net_parameters))
     df_save = vcat(df_mech, df_nn)
     CSV.write(joinpath(dir_petab, "parameters.tsv"), df_save, delim = '\t')
