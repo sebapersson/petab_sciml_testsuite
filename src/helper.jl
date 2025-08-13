@@ -47,46 +47,57 @@ function save_io(dirsave, i::Integer, input, order_jl, order_py, iotype::Symbol)
     end
 
     if iotype == :input
-        HDF5.h5open(joinpath(dirsave, "net_input$i.hdf5"), "w") do file
-            write(file, "input", xsave)
-        end
+        f = HDF5.h5open(joinpath(dirsave, "net_input_$i.hdf5"), "w")
+        g_inputs = HDF5.create_group(f, "inputs")
+        g_input0 = HDF5.create_group(g_inputs, "input0")
+        g_input0["data"] = xsave
     elseif iotype == :output
-        HDF5.h5open(joinpath(dirsave, "net_output_$i.hdf5"), "w") do file
-            write(file, "output", xsave)
-        end
+        f = HDF5.h5open(joinpath(dirsave, "net_output_$i.hdf5"), "w")
+        g_outputs = HDF5.create_group(f, "outputs")
+        g_output0 = HDF5.create_group(g_outputs, "output0")
+        g_output0["data"] = xsave
     end
+    g_metadata = HDF5.create_group(f, "metadata")
+    g_metadata["perm"] = "row"
+    close(f)
     return nothing
 end
 
-function save_ps(dirsave, i::Integer, nn_model, ps)::Nothing
-    nn_ps_to_h5(nn_model, ps, nothing, joinpath(dirsave, "net_ps_$i.hdf5"))
+function save_ps(dirsave, i::Integer, nn_model, netid::Symbol, ps)::Nothing
+    nn_ps_to_h5(nn_model, ps, nothing, netid, joinpath(dirsave, "net_ps_$i.hdf5"))
     return nothing
 end
 
 function nn_ps_to_h5(nn, ps::Union{ComponentArray, NamedTuple},
-        freeze_info::Union{Nothing, Dict}, path::String)::Nothing
+        freeze_info::Union{Nothing, Dict}, netid::Symbol, path::String)::Nothing
     if isfile(path)
         rm(path)
     end
     file = HDF5.h5open(path, "w")
+    g_net = HDF5.create_group(file, "parameters")
+    g_parameters = HDF5.create_group(g_net, "$netid")
     for (layername, layer) in pairs(nn.layers)
         if isnothing(freeze_info) || !haskey(freeze_info, layername)
-            layer_ps_to_h5!(file, layer, ps[layername], layername)
+            layer_ps_to_h5!(g_parameters, layer, ps[layername], layername)
         else
             @assert layer isa Lux.Dense "Layer freezing only implemented for Lux.Dense yet"
-            layer_ps_to_h5!(file, layer, ps[layername], layername, freeze_info)
+            layer_ps_to_h5!(g_parameters, layer, ps[layername], layername, freeze_info)
         end
     end
+
+    # In the PEtabSciML standard parameters are Row-Major
+    g_metadata = HDF5.create_group(file, "metadata")
+    g_metadata["perm"] = "row"
     close(file)
     return nothing
 end
 
-function set_ps_net!(ps::ComponentArray, path_h5::String, nn)::Nothing
+function set_ps_net!(ps::ComponentArray, path_h5::String, nn, net_id::Symbol)::Nothing
     file = HDF5.h5open(path_h5, "r")
     for (layerid, layer) in pairs(nn.layers)
         ps_layer = ps[layerid]
         isempty(ps_layer) && continue
-        _set_ps_layer!(ps_layer, layer, file[string(layerid)])
+        _set_ps_layer!(ps_layer, layer, file["parameters"]["$(net_id)"]["$layerid"])
         ps[layerid] = ps_layer
     end
     close(file)

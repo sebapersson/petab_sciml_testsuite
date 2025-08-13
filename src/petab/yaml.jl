@@ -1,5 +1,5 @@
 function save_petab_yaml(nets_info::Dict, dir_petab,
-        input_ids::Union{Nothing, Vector{Symbol}})
+        input_file_id::Union{Nothing, Symbol})
     yaml_dict = Dict(:format_version => 2,
         :parameter_file => "parameters.tsv",
         :problems => [
@@ -10,23 +10,17 @@ function save_petab_yaml(nets_info::Dict, dir_petab,
             :model_files => Dict(:lv => Dict(:language => "sbml",
                 :location => "lv.xml")))])
 
-    ext = Dict(:hybridization_file => "hybridization.tsv",
+    ext = Dict(:hybridization_files => ["hybridization.tsv"],
         :neural_nets => Dict(),
-        :array_files => Dict())
+        :array_files => String[])
     for (net_id, net_info) in nets_info
         ext[:neural_nets][net_id] = Dict(:location => "$(net_id).yaml",
             :format => "YAML",
             :static => net_info[:static])
-        file_id = Symbol("$(net_id)_ps_file")
-        ext[:array_files][file_id] = Dict(:location => "$(net_id)_ps.hdf5",
-            :format => "HDF5")
+        push!(ext[:array_files], "$(net_id)_ps.hdf5")
     end
-    if !isnothing(input_ids)
-        for i in eachindex(input_ids)
-            file_id = "input_file$(i)"
-            ext[:array_files][file_id] = Dict(:location => "input$i.hdf5",
-                :format => "HDF5")
-        end
+    if !isnothing(input_file_id)
+        push!(ext[:array_files], "$(input_file_id).hdf5")
     end
 
     yaml_dict[:extensions] = Dict(:sciml => ext)

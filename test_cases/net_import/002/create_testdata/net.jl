@@ -1,11 +1,9 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(
-    layer1 = Dense(2, 5),
-    layer2 = Dense(2, 10),
-    layer3 = Bilinear((5, 10) => 2)
-) do x
+nn_model = @compact(layer1=Dense(2, 5),
+    layer2=Dense(2, 10),
+    layer3=Bilinear((5, 10) => 2)) do x
     x1 = layer1(x)
     x2 = layer2(x)
     out = layer3((x1, x2))
@@ -20,7 +18,7 @@ for i in 1:3
     ps, st = Lux.setup(rng, nn_model)
     input = rand(rng, Float32, 2)
     output = vec(nn_model(input, ps, st)[1])
-    save_ps(dirsave, i, nn_model, ps)
+    save_ps(dirsave, i, nn_model, :net0, ps)
     save_io(dirsave, i, input, input_order_jl, input_order_py, :input)
     save_io(dirsave, i, output, output_order_jl, output_order_py, :output)
 end

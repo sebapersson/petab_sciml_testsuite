@@ -13,6 +13,6 @@ function _get_net_parameters(nn_models, net_id::Symbol, net_ps_id::String)
     pnn = Lux.initialparameters(rng, nn_models[net_id][2]) |>
           ComponentArray |>
           f64
-    set_ps_net!(pnn, path_ps, nn_models[net_id][2])
+    set_ps_net!(pnn, path_ps, nn_models[net_id][2], net_id)
     return pnn
 end

@@ -1,10 +1,8 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(
-    layer1 = Conv((2, 2), 5 => 1; cross_correlation = true),
-    drop = Dropout(0.5; dims = 3)
-) do x
+nn_model = @compact(layer1=Conv((2, 2), 5 => 1; cross_correlation = true),
+    drop=Dropout(0.5; dims = 3)) do x
     x1 = drop(x)
     out = layer1(x1)
     @return out
@@ -23,8 +21,9 @@ for i in 1:3
         output += _output
     end
     output ./= 40000
-    save_ps(dirsave, i, nn_model, ps)
+    save_ps(dirsave, i, nn_model, :net0, ps)
     save_io(dirsave, i, input[:, :, :, 1], input_order_jl, input_order_py, :input)
     save_io(dirsave, i, output[:, :, :, 1], output_order_jl, output_order_py, :output)
 end
-write_yaml(dirsave, input_order_jl, input_order_py, output_order_jl, output_order_py; dropout = true)
+write_yaml(dirsave, input_order_jl, input_order_py,
+    output_order_jl, output_order_py; dropout = true)

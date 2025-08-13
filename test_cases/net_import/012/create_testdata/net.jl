@@ -1,9 +1,7 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(
-    flatten1 = FlattenLayer(),
-) do x
+nn_model = @compact(flatten1=FlattenLayer(),) do x
     out = flatten1(x)
     @return out
 end
@@ -19,4 +17,5 @@ for i in 1:3
     save_io(dirsave, i, input, input_order_jl, input_order_py, :input)
     save_io(dirsave, i, output, output_order_jl, output_order_py, :output)
 end
-write_yaml(dirsave, input_order_jl, input_order_py, output_order_jl, output_order_py; ps = false)
+write_yaml(
+    dirsave, input_order_jl, input_order_py, output_order_jl, output_order_py; ps = false)
