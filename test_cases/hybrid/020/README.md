@@ -1,4 +1,4 @@
-# Test Case 021
+# Test Case 020
 
 Test case for when one neural network with two outputs appears in the observable formula.
 
