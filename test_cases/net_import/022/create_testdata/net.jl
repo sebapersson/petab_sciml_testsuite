@@ -1,7 +1,7 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(layer1=Conv((2, 2), 5 => 1; cross_correlation = true),
+nn_model = @compact(layer1=Conv((2, 2), 5=>1; cross_correlation = true),
     drop=Dropout(0.5; dims = 3)) do x
     x1 = drop(x)
     out = layer1(x1)
