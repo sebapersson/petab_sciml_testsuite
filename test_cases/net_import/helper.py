@@ -4,11 +4,12 @@ import h5py
 
 from petab_sciml.standard import Input, NNModel, NNModelStandard
 
-def make_yaml(net, dir_save, net_name="net.yaml"):
+def make_yaml(net, dir_save, net_name="net.yaml", inputs = ["input0"]):
+    inputs = [Input(input_id=input_name) for input_name in inputs]
     net_model = NNModel.from_pytorch_module(
         module=net,
         nn_model_id="net0",
-        inputs=[Input(input_id="input0")]
+        inputs=inputs
     )
     NNModelStandard.save_data(
         data=net_model, filename=os.path.join(dir_save, net_name),
