@@ -1,4 +1,4 @@
-# Test Case 029
+# Test Case 028
 
 Test case for when a feed-forward neural network appears in one of the observable formulas, the weight array in one of the layers is frozen.
 
