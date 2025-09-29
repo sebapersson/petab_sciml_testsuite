@@ -2,7 +2,7 @@ using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
 nn_model = @compact(norm1=LayerNorm((20,); affine = true),
-    layer1=Dense(20 => 5)) do x
+    layer1=Dense(20=>5)) do x
     embed = norm1(x)
     out = layer1(embed)
     @return out

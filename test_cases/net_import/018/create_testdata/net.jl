@@ -2,8 +2,8 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(conv1=Conv((5, 5), 1 => 6; cross_correlation = true),
-    conv2=Conv((5, 5), 6 => 16; cross_correlation = true),
+nn_model = @compact(conv1=Conv((5, 5), 1=>6; cross_correlation = true),
+    conv2=Conv((5, 5), 6=>16; cross_correlation = true),
     max_pool1=MaxPool((2, 2)),
     fc1=Dense(64, 120),
     fc2=Dense(120, 84),
