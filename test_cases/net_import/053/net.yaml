@@ -38,7 +38,8 @@ forward:
   args:
   - - net_input1
     - net_input2
-  kwargs: {}
+  kwargs:
+    dim: 0
 - name: layer1
   op: call_module
   target: layer1
