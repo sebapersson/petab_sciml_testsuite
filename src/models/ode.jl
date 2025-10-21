@@ -14,6 +14,9 @@ function get_odeproblem(ode_id::Symbol, nn_models::Dict)
         if haskey(nn_models, :net1)
             pnn = Lux.initialparameters(rng, nn_models[:net1][2])
             p_ode = ComponentArray(merge(p_mechanistic, (net1 = pnn,)))
+        elseif haskey(nn_models, :net5)
+            pnn = Lux.initialparameters(rng, nn_models[:net5][2])
+            p_ode = ComponentArray(merge(p_mechanistic, (net5 = pnn,)))
         else
             pnn = Lux.initialparameters(rng, nn_models[:net4][2])
             p_ode = ComponentArray(merge(p_mechanistic, (net4 = pnn,)))
@@ -62,6 +65,9 @@ function lv_ude1(du, u, p, t, nn_models)
     if haskey(nn_models, :net1)
         st1, nn1 = nn_models[:net1]
         du_nn = nn1([prey, predator], p.net1, st1)[1][1]
+    elseif haskey(nn_models, :net5)
+        st5, nn5 = nn_models[:net5]
+        du_nn = nn5([prey, predator], p.net5, st5)[1][1]
     else
         st4, nn4 = nn_models[:net4]
         du_nn = nn4([prey, predator], p.net4, st4)[1][2]

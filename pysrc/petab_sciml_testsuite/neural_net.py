@@ -70,6 +70,23 @@ class Net4(nn.Module):
         return x
 
 
+class Net5(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.layer1 = nn.Linear(2, 5)
+        self.layer2 = nn.Linear(5, 5)
+        self.layer3 = nn.Linear(5, 1)
+
+    def forward(self, net_input1: torch.Tensor, net_input2: torch.Tensor) -> torch.Tensor:
+        net_input = torch.cat((net_input1, net_input2))
+        x = self.layer1(net_input)
+        x = F.tanh(x)
+        x = self.layer2(x)
+        x = F.tanh(x)
+        x = self.layer3(x)
+        return x
+
+
 def get_net_yaml(net_id):
     if net_id == "net1":
         net = Net1()
@@ -77,13 +94,20 @@ def get_net_yaml(net_id):
         net = Net2()
     elif net_id == "net3":
         net = Net3()
-    else:
+    elif net_id == "net4":
         net = Net4()
+    else:
+        net = Net5()
+
+    if net_id == "net5":
+        inputs = [Input(input_id="input0"), Input(input_id="input1")]
+    else:
+        inputs = [Input(input_id="input0")]
 
     net_model = NNModel.from_pytorch_module(
         module=net,
         nn_model_id=net_id,
-        inputs=[Input(input_id="input0")]
+        inputs=inputs
     )
     dir_save = os.path.join(os.getcwd(), 'assets', 'net_yaml')
     NNModelStandard.save_data(
@@ -96,3 +120,4 @@ get_net_yaml("net1")
 get_net_yaml("net2")
 get_net_yaml("net3")
 get_net_yaml("net4")
+get_net_yaml("net5")
