@@ -5,7 +5,7 @@ nets_info = Dict(:net5 => Dict(:ps_file => "net5_OBS1_ps.hdf5",
 ode_id = :reference
 llh_id = :OBS1
 condition_table_id = :Table1
-observable_table_id = :Table2
+observable_table_id = :Table7
 sbml_id = :lv_reference
 petab_parameters_ids = [:alpha, :delta, :beta, :gamma]
 # Mapping and hybridization generally differ between tests and must thus be hand-coded
