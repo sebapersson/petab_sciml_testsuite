@@ -1,6 +1,6 @@
 using DataFrames, PEtabSciMLTestsuite
 
-nets_info = Dict(:net1 => Dict(:ps_file => "net1_pre_ODE1_ps.hdf5",
+nets_info = Dict(:net5 => Dict(:ps_file => "net5_pre_ODE1_ps.hdf5",
     :static => true))
 ode_id = :reference
 llh_id = :pre_ODE1
@@ -13,16 +13,16 @@ mapping_table = DataFrame(
     petabEntityId = [
         "net1_input_pre1",
         "net1_input_pre2",
-        "net1_output1",
-        "net1_ps"
+        "net5_output1",
+        "net5_ps"
     ],
     modelEntityId = [
-        "net1.inputs[0][0]",
-        "net1.inputs[0][1]",
-        "net1.outputs[0][0]",
-        "net1.parameters"
+        "net5.inputs[0][0]",
+        "net5.inputs[1][0]",
+        "net5.outputs[0][0]",
+        "net5.parameters"
     ])
-hybridization_table = DataFrame(targetId = ["gamma"], targetValue = ["net1_output1"])
+hybridization_table = DataFrame(targetId = ["gamma"], targetValue = ["net5_output1"])
 
 save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)
 create_petab_files(@__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids,

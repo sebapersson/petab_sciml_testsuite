@@ -1,7 +1,8 @@
 function get_net_models(nets_info::Dict)
     out = Dict()
     for net_id in keys(nets_info)
-        if net_id == :net1
+        # net1 and net5 have the same layer/parameter structure
+        if net_id in [:net1, :net5]
             out[net_id] = get_net1()
         end
         if net_id == :net2
