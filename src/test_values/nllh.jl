@@ -107,8 +107,9 @@ end
 
 function llh_pre_ODE1(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Real
     mprey, mpredator, tsave = _get_measurement_info(measurements)
-    st, nn_model = nn_models[:net1]
-    nnout = nn_model([1.0, 1.0], x.net1, st)[1]
+    net_id = haskey(nn_models, :net1) ? :net1 : :net5
+    st, nn_model = nn_models[net_id]
+    nnout = nn_model([1.0, 1.0], x[net_id], st)[1]
     _p = convert.(eltype(x), ComponentArray(oprob.p))
     _p[1:3] .= x[1:3]
     _p[4] = nnout[1]
@@ -330,10 +331,11 @@ end
 
 function _llh2(sol::ODESolution, mprey, mpredator, x, nn_models)
     prey, predator = sol[1, :], sol[2, :]
-    st, nn_model = nn_models[:net1]
     nllh, σ = 0.0, 0.05
     for i in eachindex(mprey)
-        model_output = nn_model([prey[i], predator[i]], x.net1, st)[1][1]
+        net_id = haskey(nn_models, :net1) ? :net1 : :net5
+        st, nn_model = nn_models[net_id]
+        model_output = nn_model([prey[i], predator[i]], x[net_id], st)[1][1]
         nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mprey[i] - model_output)^2 / σ^2
     end
     for i in eachindex(mpredator)
