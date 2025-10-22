@@ -40,7 +40,10 @@ const OBSERVABLE_TABLE7 = DataFrame(observableId = ["prey_o", "predator_o"],
     observableTransformation = ["lin", "lin"],
     noiseDistribution = ["normal", "normal"])
 
-const OBSERVABLE_TABLES = Dict(:Table1 => OBSERVABLE_TABLE1, :Table2 => OBSERVABLE_TABLE2, :Table3 => OBSERVABLE_TABLE3, :Table4 => OBSERVABLE_TABLE4, :Table5 => OBSERVABLE_TABLE5, :Table6 => OBSERVABLE_TABLE6, :Table7 => OBSERVABLE_TABLE7)
+const OBSERVABLE_TABLES = Dict(:Table1 => OBSERVABLE_TABLE1, :Table2 => OBSERVABLE_TABLE2,
+    :Table3 => OBSERVABLE_TABLE3,
+    :Table4 => OBSERVABLE_TABLE4, :Table5 => OBSERVABLE_TABLE5,
+    :Table6 => OBSERVABLE_TABLE6, :Table7 => OBSERVABLE_TABLE7)
 
 function save_observables_table(observable_table_id::Symbol, dir_petab)::Nothing
     observables = OBSERVABLE_TABLES[observable_table_id]
