@@ -10,7 +10,7 @@ $$\frac{\mathrm{d} \text{prey}}{\mathrm{d} t} = \alpha \cdot \text{prey} - \beta
 
 $$\frac{\mathrm{d} \text{predator}}{\mathrm{d} t} = \gamma \cdot \text{prey} \cdot \text{predator} - \delta \cdot \text{predator}$$
 
-And the observable formula for `prey` is given by `NN[1]` (the output from a neural network).
+And the observable formula for `prey` is given by `N[1]` (the output from a neural network).
 
 ## Data-Driven Model Structure
 
