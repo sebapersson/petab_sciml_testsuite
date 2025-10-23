@@ -22,9 +22,10 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
         elseif llh_id == :pre_ODE3
             input = [1.0, x.alpha]
         end
-        st, nn_model = nn_models[:net1]
-        p = (alpha = 1.3, delta = 1.8, beta = 0.9,
-            gamma = nn_model(input, x.net1, st)[1][1])
+        net_id = haskey(nn_models, :net1) ? :net1 : :net5
+        st, nn_model = nn_models[net_id]
+        nnout = nn_model(input, x[net_id], st)[1][1]
+        p = (alpha = 1.3, delta = 1.8, beta = 0.9, gamma = nnout)
         _ode_problem = remake(ode_problem, p = p)
         sol = solve(_ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
             saveat = unique(measurements.time))
@@ -103,10 +104,11 @@ function get_simulations(x, llh_id::Symbol, ode_problem::ODEProblem, nn_models,
     end
 
     if llh_id == :OBS1
-        st, nn_model = nn_models[:net1]
+        net_id = haskey(nn_models, :net1) ? :net1 : :net5
+        st, nn_model = nn_models[net_id]
         sol = solve(ode_problem, Vern9(), abstol = 1e-12, reltol = 1e-12,
             saveat = unique(measurements.time))
-        prey = [nn_model(sol[:, i], x.net1, st)[1][1] for i in eachindex(sol.t)]
+        prey = [nn_model(sol[:, i], x[net_id], st)[1][1] for i in eachindex(sol.t)]
         simulated_values = vcat(prey, sol[2, :])
     end
 

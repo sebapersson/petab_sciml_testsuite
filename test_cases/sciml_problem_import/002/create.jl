@@ -22,8 +22,7 @@ mapping_table = DataFrame(
         "net1.outputs[0][0]",
         "net1.parameters"
     ])
-hybridization_table = DataFrame(targetId = ["gamma"],
-    targetValue = ["net1_output1"])
+hybridization_table = DataFrame(targetId = ["gamma"], targetValue = ["net1_output1"])
 
 save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)
 create_petab_files(@__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids,

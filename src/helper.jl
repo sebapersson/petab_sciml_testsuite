@@ -3,22 +3,50 @@
 =#
 
 function write_yaml(dirsave, input_order_jl, input_order_py, output_order_jl,
-        output_order_py; ps::Bool = true, dropout::Bool = false)::Nothing
+        output_order_py; ps::Bool = true, dropout::Bool = false,
+        n_input_args::Integer = 1, n_output_args::Integer = 1)::Nothing
+    input_names = ["net_input_1", "net_input_2, net_input_3"]
+    if n_input_args > 1
+        input_names
+    end
+
     solutions = Dict(:net_file => "net.yaml",
-        :net_input => [
-            "net_input_1.hdf5",
-            "net_input_2.hdf5",
-            "net_input_3.hdf5"
-        ],
-        :net_output => [
-            "net_output_1.hdf5",
-            "net_output_2.hdf5",
-            "net_output_3.hdf5"
-        ],
         :input_order_jl => input_order_jl,
         :input_order_py => input_order_py,
         :output_order_jl => output_order_jl,
         :output_order_py => output_order_py)
+
+    if n_input_args == 1
+        solutions[:net_input] = [
+            "net_input_1.hdf5",
+            "net_input_2.hdf5",
+            "net_input_3.hdf5"
+        ]
+    else
+        for i in 1:n_input_args
+            solutions[Symbol("net_input_arg$(i-1)")] = [
+                "net_input_1_arg$(i-1).hdf5",
+                "net_input_2_arg$(i-1).hdf5",
+                "net_input_3_arg$(i-1).hdf5"
+            ]
+        end
+    end
+    if n_output_args == 1
+        solutions[:net_output] = [
+            "net_output_1.hdf5",
+            "net_output_2.hdf5",
+            "net_output_3.hdf5"
+        ]
+    else
+        for i in 1:n_input_args
+            solutions[Symbol("net_output_arg$(i-1)")] = [
+                "net_output_1_arg$(i-1).hdf5",
+                "net_output_2_arg$(i-1).hdf5",
+                "net_output_3_arg$(i-1).hdf5"
+            ]
+        end
+    end
+
     if ps
         solutions[:net_ps] = ["net_ps_1.hdf5", "net_ps_2.hdf5", "net_ps_3.hdf5"]
     end
@@ -29,7 +57,8 @@ function write_yaml(dirsave, input_order_jl, input_order_py, output_order_jl,
     return nothing
 end
 
-function save_io(dirsave, i::Integer, input, order_jl, order_py, iotype::Symbol)::Nothing
+function save_io(dirsave, i::Integer, input, order_jl, order_py,
+        iotype::Symbol; arg_index = nothing)::Nothing
     @assert length(order_jl)==length(order_py) "Length of input format vectors do not match"
     if order_jl == order_py
         xsave = input
@@ -46,13 +75,14 @@ function save_io(dirsave, i::Integer, input, order_jl, order_py, iotype::Symbol)
         xsave = permutedims(xsave, reverse(1:ndims(xsave)))
     end
 
+    arg_index_str = isnothing(arg_index) ? "" : "_arg$(arg_index)"
     if iotype == :input
-        f = HDF5.h5open(joinpath(dirsave, "net_input_$i.hdf5"), "w")
+        f = HDF5.h5open(joinpath(dirsave, "net_input_$(i)$(arg_index_str).hdf5"), "w")
         g_inputs = HDF5.create_group(f, "inputs")
         g_input0 = HDF5.create_group(g_inputs, "input0")
         g_input0["data"] = xsave
     elseif iotype == :output
-        f = HDF5.h5open(joinpath(dirsave, "net_output_$i.hdf5"), "w")
+        f = HDF5.h5open(joinpath(dirsave, "net_output_$(i)$(arg_index_str).hdf5"), "w")
         g_outputs = HDF5.create_group(f, "outputs")
         g_output0 = HDF5.create_group(g_outputs, "output0")
         g_output0["data"] = xsave
