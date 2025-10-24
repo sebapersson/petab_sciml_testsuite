@@ -34,7 +34,7 @@ Note, arrays test values (e.g., ML model inputs, outputs, gradient) are provided
 
 These tests verify that different ML architectures (e.g., layers, activation functions) defined in the PEtab SciML YAML format (layers, activations) are imported correctly.
 
-For each test case, three random input tensors, parameter sets, and expected outputs are provided as `net_input_i.hdf5`, `net_ps_i.hdf5`, and `net_output_i.hdf5` for i = 1..3. The file `solutions.yaml` lists the input/parameter/output combinations to verify. For tests that include dropout, `solutions.yaml` provides a `dropout` field indicating how many forward passes to run for computing the mean that should compared against the reference.
+For each test case, three random input tensors, parameter sets, and expected outputs are provided as `net_input_i.hdf5`, `net_ps_i.hdf5`, and `net_output_i.hdf5` for i = 1..3. The file `solutions.yaml` lists the input/parameter/output combinations to verify. For tests that include dropout, `solutions.yaml` provides a `dropout` field indicating how many forward passes to run for computing the mean that should be compared against the reference.
 
 Currently, supported and tested layers and activation functions are:
 
