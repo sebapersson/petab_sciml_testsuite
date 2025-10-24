@@ -36,7 +36,8 @@ These tests verify that different ML architectures (e.g., layers, activation fun
 
 For each test case, three random input tensors, parameter sets, and expected outputs are provided as `net_input_i.hdf5`, `net_ps_i.hdf5`, and `net_output_i.hdf5` for i = 1..3. The file `solutions.yaml` lists the input/parameter/output combinations to verify.
 
-It also records per-ecosystem axis orders (e.g., `input_order_py`/`output_order_py` and `input_order_jl`/`output_order_jl`) to handle differing tensor indexing conventions. The test HDF5 files follow the PyTorch layout, so `input_order_py = [C, H, W]` (channel–height–width) describes how tensors are stored. `input_order_jl` then specifies how inputs should be arranged in Julia for performance (efficient memory access). I adding an importer in another another language (e.g., R), include the corresponding input/output orders in `solutions.yaml`. For tests that include dropout, `solutions.yaml` provides a `dropout` field indicating how many forward passes to run for computing the mean that should compared against the reference.
+It also records per-ecosystem axis orders (e.g., `input_order_py`/`output_order_py` and `input_order_jl`/`output_order_jl`) to handle differing tensor indexing conventions. The test HDF5 files follow the PyTorch layout, so `input_order_py = [C, H, W]` (channel–height–width) describes how tensors are stored. `input_order_jl` then specifies how inputs should be arranged in Julia for performance (efficient memory access). If adding an importer in another another language (e.g., R), include the corresponding input/output orders in `solutions.yaml`. For tests that include dropout, `solutions.yaml` provides a `dropout` field indicating how many forward passes to run for computing the mean that should be compared against the reference.
+
 
 Currently, supported and tested layers and activation functions are:
 
