@@ -27,3 +27,4 @@ docs/site/
 Manifest.toml
 
 _testsuite_venv
+__pycache__/
