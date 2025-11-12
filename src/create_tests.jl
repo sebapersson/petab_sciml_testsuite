@@ -60,7 +60,7 @@ function create_petab_files(dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::
 end
 
 function create_hybrid_tests()
-    dir_tests = joinpath(@__DIR__, "..", "test_cases", "hybrid")
+    dir_tests = joinpath(@__DIR__, "..", "test_cases", "sciml_problem_import")
     test_cases = filter(x -> x != "README.md", readdir(dir_tests))
     for test_case in test_cases
         @info "Hybrid test-case $(test_case)"
@@ -78,7 +78,7 @@ function create_initialization_tests()
 end
 
 function create_net_import_tests()
-    dir_tests = joinpath(@__DIR__, "..", "test_cases", "net_import")
+    dir_tests = joinpath(@__DIR__, "..", "test_cases", "ml_model_import")
     test_cases = filter(!(x -> x in ["README.md", "helper.py"]), readdir(dir_tests))
     for test_case in test_cases
         @info "Net-import test-case $(test_case)"
