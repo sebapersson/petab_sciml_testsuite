@@ -119,12 +119,14 @@ function llh_pre_ODE1(x, oprob::ODEProblem, nn_models, measurements::DataFrame):
 end
 
 function llh_pre_ODE2(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Real
-    conds = ["cond1", "cond2"]
+    experiments = ["e1", "e2"]
     inputs = [[10.0, 20.0], [1.0, 1.0]]
     st, nn_model = nn_models[:net1]
     llh = 0.0
-    for (i, cond) in pairs(conds)
-        mprey, mpredator, tsave = _get_measurement_info(measurements; cond = cond)
+    for (i, experiment) in pairs(experiments)
+        mprey, mpredator, tsave = _get_measurement_info(
+            measurements; experiment = experiment
+        )
         nnout = nn_model(inputs[i], x.net1, st)[1]
         p = convert.(eltype(x), ComponentArray(oprob.p))
         p[1:3] .= x[1:3]
@@ -217,13 +219,16 @@ function llh_pre_ODE7(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
     return _llh1(sol, mprey, mpredator)
 end
 
-function llh_pre_ODE8(x, oprob::ODEProblem, nn_models, measurements::DataFrame,
-        inputs)::Real
-    conds = ["cond1", "cond2"]
+function llh_pre_ODE8(
+        x, oprob::ODEProblem, nn_models, measurements::DataFrame, inputs
+        )::Real
+    experiments = ["e1", "e2"]
     st, nn_model = nn_models[:net3]
     llh = 0.0
-    for (i, cond) in pairs(conds)
-        mprey, mpredator, tsave = _get_measurement_info(measurements; cond = cond)
+    for (i, experiment) in pairs(experiments)
+        mprey, mpredator, tsave = _get_measurement_info(
+            measurements; experiment = experiment
+        )
         nnout = nn_model(inputs[i], x.net3, st)[1]
         p = convert.(eltype(x), ComponentArray(oprob.p))
         p[1:3] .= x[1:3]
@@ -403,9 +408,9 @@ function _llh6(sol::ODESolution, mprey, mpredator, x, nn_models)
     return nllh * -1
 end
 
-function _get_measurement_info(measurements::DataFrame; cond = "")
-    if !isempty(cond)
-        measurements = measurements[measurements[:, :simulationConditionId] .== cond, :]
+function _get_measurement_info(measurements::DataFrame; experiment = "")
+    if !isempty(experiment)
+        measurements = measurements[measurements[:, :experimentId] .== experiment, :]
     end
     mprey = measurements[measurements[!, :observableId] .== "prey_o", :measurement]
     mpredator = measurements[measurements[!, :observableId] .== "predator_o", :measurement]

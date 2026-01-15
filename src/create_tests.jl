@@ -37,23 +37,26 @@ function save_initialization_test_values(
     return nothing
 end
 
-function create_petab_files(dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::Symbol,
-        petab_parameters_ids::Vector{Symbol},
-        condition_table_id::Symbol, observable_table_id::Symbol,
-        mapping_table::DataFrame, hybridization_table::DataFrame;
-        estimate_net_parameters::Bool = true,
-        input_file_id::Union{Nothing, Symbol} = nothing)::Nothing
+function create_petab_files(
+        dir_test, nets_info::Dict, sbml_id::Symbol, llh_id::Symbol,
+        petab_parameters_ids::Vector{Symbol}, experiment_table_id::Symbol,
+        condition_table_id::Symbol, observable_table_id::Symbol, mapping_table::DataFrame,
+        hybridization_table::DataFrame; estimate_net_parameters::Bool = true,
+        input_file_id::Union{Nothing, Symbol} = nothing
+    )::Nothing
     dir_petab = joinpath(dir_test, "petab")
     save_sbml(sbml_id, dir_petab)
-    save_parameters_table(petab_parameters_ids, nets_info, estimate_net_parameters,
-        dir_petab)
+    save_parameters_table(
+        petab_parameters_ids, nets_info, estimate_net_parameters, dir_petab
+    )
     save_measurements_table(llh_id, dir_petab)
+    save_experiments_table(experiment_table_id, dir_petab)
     save_conditions_table(condition_table_id, dir_petab)
     save_observables_table(observable_table_id, dir_petab)
     save_net_parameters(nets_info, dir_petab)
     save_net_yaml(nets_info, dir_petab)
     save_net_inputs(input_file_id, dir_petab)
-    save_petab_yaml(nets_info, dir_petab, input_file_id)
+    save_petab_yaml(nets_info, dir_petab, input_file_id, condition_table_id)
     CSV.write(joinpath(dir_petab, "mapping.tsv"), mapping_table, delim = '\t')
     CSV.write(joinpath(dir_petab, "hybridization.tsv"), hybridization_table, delim = '\t')
     return nothing

@@ -1,4 +1,4 @@
-# Test Case 015
+# Test Case 015 (TODO: Figure out how to deal with simulation conditions)
 
 Test case for when a feed-forward neural network sets one of the model parameters, with the input to the network being provided as a PyTorch file with PyTorch indexing. The input file differs by condition. Since the network is not a part of the ODE model's right-hand side (RHS), it should only be evaluated once per likelihood computation for computational efficiency.
 

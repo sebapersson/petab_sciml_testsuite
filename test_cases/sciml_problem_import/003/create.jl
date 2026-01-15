@@ -4,7 +4,8 @@ nets_info = Dict(:net1 => Dict(:ps_file => "net1_pre_ODE2_ps.hdf5",
     :static => true))
 ode_id = :reference
 llh_id = :pre_ODE2
-condition_table_id = :Table2
+experiment_table_id = :Table2
+condition_table_id = :Table1
 observable_table_id = :Table1
 sbml_id = :lv_reference
 petab_parameters_ids = [:alpha, :delta, :beta, :net1_input_pre1, :net1_input_pre2]
@@ -22,10 +23,10 @@ mapping_table = DataFrame(
         "net1.outputs[0][0]",
         "net1.parameters"
     ])
-hybridization_table = DataFrame(targetId = ["gamma"],
-    targetValue = ["net1_output1"])
+hybridization_table = DataFrame(targetId = ["gamma"], targetValue = ["net1_output1"])
 
 save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)
-create_petab_files(@__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids,
-    condition_table_id, observable_table_id, mapping_table,
-    hybridization_table)
+create_petab_files(
+    @__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids, experiment_table_id,
+    condition_table_id, observable_table_id, mapping_table, hybridization_table
+)

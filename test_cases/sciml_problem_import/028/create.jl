@@ -4,7 +4,8 @@ nets_info = Dict(:net1 => Dict(:ps_file => "net1_OBS1_ps.hdf5",
     :static => false))
 ode_id = :reference
 llh_id = :OBS1
-condition_table_id = :Table1
+experiment_table_id = :Table1
+condition_table_id = :Nothing
 observable_table_id = :Table2
 sbml_id = :lv_reference
 petab_parameters_ids = [:alpha, :delta, :beta, :gamma, :net1_layer1_weight_freeze]
@@ -29,6 +30,9 @@ hybridization_table = DataFrame(targetId = ["net1_input1", "net1_input2"],
     targetValue = ["prey", "predator"])
 
 save_hybrid_test_values(
-    @__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids; freeze_info = freeze_info)
-create_petab_files(@__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids,
-    condition_table_id, observable_table_id, mapping_table, hybridization_table)
+    @__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids; freeze_info = freeze_info
+)
+create_petab_files(
+    @__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids, experiment_table_id,
+    condition_table_id, observable_table_id, mapping_table, hybridization_table
+)
