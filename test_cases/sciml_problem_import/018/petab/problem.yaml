@@ -1,17 +1,18 @@
-problems:
-  - model_files:
-      lv:
-        location: "lv.xml"
-        language: "sbml"
-    measurement_files:
-      - "measurements.tsv"
-    observable_files:
-      - "observables.tsv"
-    condition_files:
-      - "conditions.tsv"
-    mapping_files:
-      - "mapping.tsv"
+model_files:
+  lv:
+    location: "lv.xml"
+    language: "sbml"
+measurement_files:
+  - "measurements.tsv"
+observable_files:
+  - "observables.tsv"
 format_version: 2
+experiment_files:
+  - "experiments.tsv"
+parameter_files:
+  - "parameters.tsv"
+mapping_files:
+  - "mapping.tsv"
 extensions:
   sciml:
     array_files:
@@ -23,4 +24,3 @@ extensions:
         location: "net1.yaml"
         static: false
         format: "YAML"
-parameter_file: "parameters.tsv"

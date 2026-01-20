@@ -1,14 +1,19 @@
-function save_petab_yaml(nets_info::Dict, dir_petab,
-        input_file_id::Union{Nothing, Symbol})
-    yaml_dict = Dict(:format_version => 2,
-        :parameter_file => "parameters.tsv",
-        :problems => [
-            Dict(:condition_files => ["conditions.tsv"],
-            :measurement_files => ["measurements.tsv"],
-            :observable_files => ["observables.tsv"],
-            :mapping_files => ["mapping.tsv"],
-            :model_files => Dict(:lv => Dict(:language => "sbml",
-                :location => "lv.xml")))])
+function save_petab_yaml(nets_info::Dict, dir_petab, input_file_id::Union{Nothing, Symbol}, condition_table_id::Symbol)
+    yaml_dict = Dict(
+        :format_version => 2,
+        :measurement_files => ["measurements.tsv"],
+        :experiment_files => ["experiments.tsv"],
+        :observable_files => ["observables.tsv"],
+        :parameter_files => ["parameters.tsv"],
+        :mapping_files => ["mapping.tsv"],
+        :model_files => Dict(
+            :lv => Dict(
+                    :language => "sbml",
+                    :location => "lv.xml")))
+
+    if condition_table_id != :Nothing
+        yaml_dict[:condition_files] = ["conditions.tsv"]
+    end
 
     ext = Dict(:hybridization_files => ["hybridization.tsv"],
         :neural_nets => Dict(),
