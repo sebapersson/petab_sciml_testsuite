@@ -82,19 +82,45 @@ const NET1_LAYER1_WEIGHT_FREEZE = DataFrame(parameterId = "net1_layer1_weight",
     nominalValue = missing,
     estimate = 0)
 
-function save_parameters_table(petab_parameters_ids::Vector{Symbol}, nets_info::Dict,
-        estimate_net_parameters::Bool, dir_petab)
+const NET1_LAYER1_PRIOR = DataFrame(
+    parameterId = "net1_layer1_prior",
+    parameterScale = "lin",
+    lowerBound = "-inf",
+    upperBound = "inf",
+    nominalValue = missing,
+    estimate = 1,
+    priorDistribution = "normal",
+    priorParameters = "0.0;2.0"
+)
+
+const NET1_LAYER1_WEIGHT_PRIOR = DataFrame(
+    parameterId = "net1_layer1_weight_prior",
+    parameterScale = "lin",
+    lowerBound = "-inf",
+    upperBound = "inf",
+    nominalValue = missing,
+    estimate = 1,
+    priorDistribution = "normal",
+    priorParameters = "0.0;2.0"
+)
+
+function save_parameters_table(
+        petab_parameters_ids::Vector{Symbol}, nets_info::Dict, estimate_net_parameters::Bool,
+        dir_petab
+    )
     df_mech = DataFrame()
     for id in petab_parameters_ids
-        df_mech = vcat(df_mech, _get_parameter_info(id, :DataFrame))
+        df_mech = vcat(df_mech, _get_parameter_info(id, :DataFrame), cols = :union)
     end
 
     _net_ids = collect(keys(nets_info))
     net_ids = @. string(_net_ids) * "_ps"
-    df_nn = DataFrame(parameterId = net_ids, parameterScale = :lin, lowerBound = "-inf",
-        upperBound = "inf", nominalValue = missing,
-        estimate = Int(estimate_net_parameters))
-    df_save = vcat(df_mech, df_nn)
+    df_nn = DataFrame(
+        parameterId = net_ids, parameterScale = :lin, lowerBound = "-inf",
+        upperBound = "inf", nominalValue = missing, estimate = Int(estimate_net_parameters)
+    )
+
+    df_save = vcat(df_mech, df_nn, cols = :union)
     CSV.write(joinpath(dir_petab, "parameters.tsv"), df_save, delim = '\t')
     return nothing
 end
@@ -144,6 +170,12 @@ function _get_parameter_info(id::Symbol, what_return::Symbol)
     end
     if id == :net1_layer1_weight_freeze
         info = NET1_LAYER1_WEIGHT_FREEZE
+    end
+    if id == :net1_layer1_prior
+        info = NET1_LAYER1_PRIOR
+    end
+    if id == :net1_layer1_weight_prior
+        info = NET1_LAYER1_WEIGHT_PRIOR
     end
 
     what_return == :DataFrame && return info

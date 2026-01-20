@@ -2,7 +2,8 @@ module PEtabSciMLTestsuite
 
 import CSV
 using ComponentArrays: ComponentArray, ComponentVector
-using DataFrames: DataFrame, rename!
+import DataFrames: DataFrame, rename!, vcat
+import Distributions: logpdf, Normal, Uniform
 import FiniteDifferences
 import HDF5
 using Lux
@@ -23,6 +24,7 @@ include(joinpath("petab", "net_yaml.jl"))
 include(joinpath("petab", "inputs.jl"))
 include(joinpath("petab", "experiments.jl"))
 include(joinpath("test_values", "nllh.jl"))
+include(joinpath("test_values", "prior.jl"))
 include(joinpath("test_values", "yaml.jl"))
 include(joinpath("test_values", "net_ps.jl"))
 include(joinpath("test_values", "simulations.jl"))

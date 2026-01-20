@@ -1,7 +1,10 @@
-function save_hybrid_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol,
+function save_hybrid_test_values(
+        dir_save, nets_info::Dict, ode_id::Symbol, llh_id::Symbol,
         petab_parameters_ids::Vector{Symbol}; estimate_net_parameters::Bool = true,
         input_file_id::Union{Nothing, Symbol} = nothing,
-        freeze_info::Union{Nothing, Dict} = nothing)::Nothing
+        prior_id::Union{Nothing, Symbol} = nothing,
+        freeze_info::Union{Nothing, Dict} = nothing,
+    )::Nothing
     nn_models = get_net_models(nets_info)
     measurements = get_measurements(llh_id)
     ode_problem = get_odeproblem(ode_id, nn_models)
@@ -10,15 +13,19 @@ function save_hybrid_test_values(dir_save, nets_info::Dict, ode_id::Symbol, llh_
     x = get_x(petab_parameters_ids, net_parameters, nets_info)
     inputs = get_inputs(input_file_id)
     compute_llh = get_llh(llh_id, nn_models, ode_problem, measurements, inputs)
-    llh = compute_llh(x)
-    save_hybrid_yaml(llh, nets_info, estimate_net_parameters, dir_save)
-    save_grad(x, compute_llh, nn_models, estimate_net_parameters, freeze_info, dir_save)
+    compute_prior = get_log_prior(prior_id)
+    compute_objective = (x) -> compute_llh(x) + compute_prior(x)
+
+    objective = compute_objective(x)
+    save_hybrid_yaml(objective, nets_info, estimate_net_parameters, prior_id, dir_save)
+    save_grad(x, compute_objective, nn_models, estimate_net_parameters, freeze_info, dir_save)
     save_simulations(x, llh_id, ode_problem, nn_models, measurements, inputs, dir_save)
     return nothing
 end
 
 function save_initialization_test_values(
-        dir_save, nets_info::Dict, initializations_info::Dict)
+        dir_save, nets_info::Dict, initializations_info::Dict
+    )
     nn_models = get_net_models(nets_info)
     for (net_id, initialization_info) in initializations_info
         net_ps = _get_net_parameters(nn_models, net_id, nets_info[net_id][:ps_file])
@@ -42,7 +49,7 @@ function create_petab_files(
         petab_parameters_ids::Vector{Symbol}, experiment_table_id::Symbol,
         condition_table_id::Symbol, observable_table_id::Symbol, mapping_table::DataFrame,
         hybridization_table::DataFrame; estimate_net_parameters::Bool = true,
-        input_file_id::Union{Nothing, Symbol} = nothing
+        input_file_id::Union{Nothing, Symbol} = nothing,
     )::Nothing
     dir_petab = joinpath(dir_test, "petab")
     save_sbml(sbml_id, dir_petab)
