@@ -1,5 +1,6 @@
-function get_llh(llh_id::Symbol, nn_models, oprob::ODEProblem, measurements::DataFrame,
-        inputs)::Function
+function get_llh(
+        llh_id::Symbol, nn_models, oprob::ODEProblem, measurements::DataFrame, inputs
+    )::Function
     if llh_id == :UDE1
         llh = let _oprob = oprob, _measurements = measurements
             (x) -> llh_UDE(x, _oprob, _measurements)
@@ -420,7 +421,7 @@ end
 
 function save_grad(x, llh::Function, nn_models::Dict, estimate_net_parameters::Bool,
         freeze_info::Union{Nothing, Dict}, dir_save)::Nothing
-    grad = get_grad_llh(x, llh)
+    grad = get_grad_objective(x, llh)
 
     # Non-neural net parameters
     i_mechanistic = findall(x -> x ∉ keys(nn_models), keys(x))
@@ -439,15 +440,16 @@ function save_grad(x, llh::Function, nn_models::Dict, estimate_net_parameters::B
     return nothing
 end
 
-function get_grad_llh(x::T, llh::Function)::T where {T}
-    return FiniteDifferences.grad(FiniteDifferences.central_fdm(5, 1), llh, x)[1]
+function get_grad_objective(x::T, objective::Function)::T where {T}
+    return FiniteDifferences.grad(FiniteDifferences.central_fdm(5, 1), objective, x)[1]
 end
 
 function get_x(petab_parameters_ids, x_nn, nets_info::Dict)
     # Mechanistic (non-neural net) parameters
     x_mechanistic = Vector{Pair{Symbol, Float64}}(undef, 0)
     for id in petab_parameters_ids
-        estimate = _get_parameter_info(id, :estimate) == false && continue
+        _get_parameter_info(id, :estimate) == false && continue
+        ismissing(_get_parameter_info(id, :value)) && continue
         push!(x_mechanistic, id => _get_parameter_info(id, :value))
     end
     x_mechanistic = NamedTuple(x_mechanistic)
