@@ -1,9 +1,15 @@
 using DataFrames, PEtabSciMLTestsuite
 
-nets_info = Dict(:net1 => Dict(:ps_file => "net1_UDE1_ps.hdf5",
-        :static => false),
-    :net2 => Dict(:ps_file => "net2_OBS1_ps.hdf5",
-        :static => false))
+nets_info = Dict(
+    :net1 => Dict(
+        :ps_file => "net1_UDE1_ps.hdf5",
+        :static => false
+    ),
+    :net2 => Dict(
+        :ps_file => "net2_OBS1_ps.hdf5",
+        :static => false
+    )
+)
 ode_id = :UDE1
 llh_id = :COMBO2
 experiment_table_id = :Table1
@@ -21,7 +27,7 @@ mapping_table = DataFrame(
         "net2_input1",
         "net2_input2",
         "net2_output1",
-        "net2_ps"
+        "net2_ps",
     ],
     modelEntityId = [
         "net1.inputs[0][0]",
@@ -31,23 +37,25 @@ mapping_table = DataFrame(
         "net2.inputs[0][0]",
         "net2.inputs[0][1]",
         "net2.outputs[0][0]",
-        "net2.parameters"
-    ])
+        "net2.parameters",
+    ]
+)
 hybridization_table = DataFrame(
     targetId = [
         "net1_input1",
         "net1_input2",
         "gamma",
         "net2_input1",
-        "net2_input2"
+        "net2_input2",
     ],
     targetValue = [
         "prey",
         "predator",
         "net1_output1",
         "alpha",
-        "predator"
-    ])
+        "predator",
+    ]
+)
 
 save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)
 create_petab_files(

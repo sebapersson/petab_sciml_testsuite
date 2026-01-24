@@ -1,86 +1,110 @@
-const ALPHA = DataFrame(parameterId = "alpha",
+const ALPHA = DataFrame(
+    parameterId = "alpha",
     parameterScale = "lin",
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 1.3,
-    estimate = 1)
+    estimate = 1
+)
 
-const DELTA = DataFrame(parameterId = "delta",
+const DELTA = DataFrame(
+    parameterId = "delta",
     parameterScale = "lin",
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 1.8,
-    estimate = 1)
+    estimate = 1
+)
 
-const BETA = DataFrame(parameterId = "beta",
+const BETA = DataFrame(
+    parameterId = "beta",
     parameterScale = "lin",
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 0.9,
-    estimate = 1)
+    estimate = 1
+)
 
-const GAMMA = DataFrame(parameterId = "gamma",
+const GAMMA = DataFrame(
+    parameterId = "gamma",
     parameterScale = "lin",
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 0.8,
-    estimate = 1)
+    estimate = 1
+)
 
-const NET1_INPUT_PRE1 = DataFrame(parameterId = "net1_input_pre1",
+const NET1_INPUT_PRE1 = DataFrame(
+    parameterId = "net1_input_pre1",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 1.0,
-    estimate = 0)
+    estimate = 0
+)
 
-const NET1_INPUT_PRE2 = DataFrame(parameterId = "net1_input_pre2",
+const NET1_INPUT_PRE2 = DataFrame(
+    parameterId = "net1_input_pre2",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 1.0,
-    estimate = 0)
+    estimate = 0
+)
 
-const NET1_INPUT_PRE2_EST = DataFrame(parameterId = "net1_input_pre2_est",
+const NET1_INPUT_PRE2_EST = DataFrame(
+    parameterId = "net1_input_pre2_est",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 1.0,
-    estimate = 1)
+    estimate = 1
+)
 
-const NET2_INPUT_PRE1 = DataFrame(parameterId = "net2_input_pre1",
+const NET2_INPUT_PRE1 = DataFrame(
+    parameterId = "net2_input_pre1",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 2.0,
-    estimate = 0)
+    estimate = 0
+)
 
-const NET2_INPUT_PRE2 = DataFrame(parameterId = "net2_input_pre2",
+const NET2_INPUT_PRE2 = DataFrame(
+    parameterId = "net2_input_pre2",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 2.0,
-    estimate = 0)
+    estimate = 0
+)
 
-const NET1_LAYER1 = DataFrame(parameterId = "net1_layer1",
+const NET1_LAYER1 = DataFrame(
+    parameterId = "net1_layer1",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 0.0,
-    estimate = 1)
+    estimate = 1
+)
 
-const NET1_LAYER1_FREEZE = DataFrame(parameterId = "net1_layer1",
+const NET1_LAYER1_FREEZE = DataFrame(
+    parameterId = "net1_layer1",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = missing,
-    estimate = 0)
+    estimate = 0
+)
 
-const NET1_LAYER1_WEIGHT_FREEZE = DataFrame(parameterId = "net1_layer1_weight",
+const NET1_LAYER1_WEIGHT_FREEZE = DataFrame(
+    parameterId = "net1_layer1_weight",
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = missing,
-    estimate = 0)
+    estimate = 0
+)
 
 const NET1_LAYER1_PRIOR = DataFrame(
     parameterId = "net1_layer1_prior",
@@ -178,7 +202,10 @@ function _get_parameter_info(id::Symbol, what_return::Symbol)
         info = NET1_LAYER1_WEIGHT_PRIOR
     end
 
-    what_return == :DataFrame && return info
-    what_return == :value && return info.nominalValue[1]
-    what_return == :estimate && return Bool(info.estimate[1])
+    if what_return == :DataFrame
+        return info
+    elseif what_return == :value
+        return info.nominalValue[1]
+    end
+    return Bool(info.estimate[1])
 end

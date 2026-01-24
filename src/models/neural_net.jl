@@ -20,9 +20,11 @@ end
 
 function get_net1()
     rng = StableRNGs.StableRNG(1)
-    nn_model = @compact(layer1=Dense(2, 5, Lux.tanh),
-        layer2=Dense(5, 5, Lux.tanh),
-        layer3=Dense(5, 1)) do x
+    nn_model = @compact(
+        layer1 = Dense(2, 5, Lux.tanh),
+        layer2 = Dense(5, 5, Lux.tanh),
+        layer3 = Dense(5, 1)
+    ) do x
         embed = layer1(x)
         embed = layer2(embed)
         out = layer3(embed)
@@ -34,9 +36,11 @@ end
 
 function get_net2()
     rng = StableRNGs.StableRNG(1)
-    nn_model = @compact(layer1=Dense(2, 5, Lux.relu),
-        layer2=Dense(5, 10, Lux.relu),
-        layer3=Dense(10, 1)) do x
+    nn_model = @compact(
+        layer1 = Dense(2, 5, Lux.relu),
+        layer2 = Dense(5, 10, Lux.relu),
+        layer3 = Dense(10, 1)
+    ) do x
         embed = layer1(x)
         embed = layer2(embed)
         out = layer3(embed)
@@ -48,9 +52,11 @@ end
 
 function get_net3()
     rng = StableRNGs.StableRNG(1)
-    nn_model = @compact(layer1=Conv((5, 5), 3=>1; cross_correlation = true),
-        layer2=FlattenLayer(),
-        layer3=Dense(36=>1, Lux.relu)) do x
+    nn_model = @compact(
+        layer1 = Conv((5, 5), 3 => 1; cross_correlation = true),
+        layer2 = FlattenLayer(),
+        layer3 = Dense(36 => 1, Lux.relu)
+    ) do x
         embed = layer1(x)
         embed = layer2(embed)
         out = layer3(embed)
@@ -62,9 +68,11 @@ end
 
 function get_net4()
     rng = StableRNGs.StableRNG(1)
-    nn_model = @compact(layer1=Dense(2, 5, Lux.tanh),
-        layer2=Dense(5, 5, Lux.tanh),
-        layer3=Dense(5, 2)) do x
+    nn_model = @compact(
+        layer1 = Dense(2, 5, Lux.tanh),
+        layer2 = Dense(5, 5, Lux.tanh),
+        layer3 = Dense(5, 2)
+    ) do x
         embed = layer1(x)
         embed = layer2(embed)
         out = layer3(embed)

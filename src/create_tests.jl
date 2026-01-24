@@ -36,8 +36,10 @@ function save_initialization_test_values(
             layer_ps = @view net_ps[Symbol(what_change[1])]
             layer_ps[Symbol(what_change[2])] .= initialization_info[:value]
         end
-        nn_ps_to_h5(nn_models[net_id][2], net_ps, nothing, net_id,
-            joinpath(dir_save, "$(net_id)_ref.hdf5"))
+        nn_ps_to_h5(
+            nn_models[net_id][2], net_ps, nothing, net_id,
+            joinpath(dir_save, "$(net_id)_ref.hdf5")
+        )
     end
 
     save_initialization_yaml(initializations_info, dir_save)
@@ -76,6 +78,7 @@ function create_hybrid_tests()
         @info "Hybrid test-case $(test_case)"
         include(joinpath(dir_tests, test_case, "create.jl"))
     end
+    return nothing
 end
 
 function create_initialization_tests()
@@ -85,6 +88,7 @@ function create_initialization_tests()
         @info "Initialization test-case $(test_case)"
         include(joinpath(dir_tests, test_case, "create.jl"))
     end
+    return nothing
 end
 
 function create_net_import_tests()
@@ -94,4 +98,5 @@ function create_net_import_tests()
         @info "Net-import test-case $(test_case)"
         include(joinpath(dir_tests, test_case, "create_testdata", "net.jl"))
     end
+    return nothing
 end

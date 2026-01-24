@@ -15,24 +15,26 @@ mapping_table = DataFrame(
         "net1_input_pre2",
         "net4_output1",
         "net4_output2",
-        "net4_ps"
+        "net4_ps",
     ],
     modelEntityId = [
         "net4.inputs[0][0]",
         "net4.inputs[0][1]",
         "net4.outputs[0][0]",
         "net4.outputs[0][1]",
-        "net4.parameters"
-    ])
+        "net4.parameters",
+    ]
+)
 hybridization_table = DataFrame(
     targetId = [
         "alpha",
-        "gamma"
+        "gamma",
     ],
     targetValue = [
         "net4_output1",
-        "net4_output2"
-    ])
+        "net4_output2",
+    ]
+)
 
 save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)
 create_petab_files(
