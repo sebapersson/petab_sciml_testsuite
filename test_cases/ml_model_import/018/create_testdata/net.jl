@@ -1,14 +1,15 @@
-
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(conv1=Conv((5, 5), 1=>6; cross_correlation = true),
-    conv2=Conv((5, 5), 6=>16; cross_correlation = true),
-    max_pool1=MaxPool((2, 2)),
-    fc1=Dense(64, 120),
-    fc2=Dense(120, 84),
-    fc3=Dense(84, 10),
-    flatten1=FlattenLayer()) do x
+nn_model = @compact(
+    conv1 = Conv((5, 5), 1 => 6; cross_correlation = true),
+    conv2 = Conv((5, 5), 6 => 16; cross_correlation = true),
+    max_pool1 = MaxPool((2, 2)),
+    fc1 = Dense(64, 120),
+    fc2 = Dense(120, 84),
+    fc3 = Dense(84, 10),
+    flatten1 = FlattenLayer()
+) do x
     c1 = conv1(x)
     s2 = max_pool1(c1)
     c3 = conv2(s2)

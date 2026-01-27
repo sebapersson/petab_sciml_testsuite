@@ -11,7 +11,8 @@ condition_table_id = :Nothing
 observable_table_id = :Table1
 sbml_id = :lv_reference
 petab_parameters_ids = [
-    :alpha, :delta, :beta, :net1_input_pre1, :net1_input_pre2, :net1_layer1_prior]
+    :alpha, :delta, :beta, :net1_input_pre1, :net1_input_pre2, :net1_layer1_prior,
+]
 priors = Dict(:net1 => Normal(0.0, 1.0))
 # Mapping and hybridization generally differ between tests and must thus be hand-coded
 mapping_table = DataFrame(
@@ -27,8 +28,9 @@ mapping_table = DataFrame(
         "net1.inputs[0][1]",
         "net1.outputs[0][0]",
         "net1.parameters",
-        "net1.parameters[layer1]"
-    ])
+        "net1.parameters[layer1]",
+    ]
+)
 hybridization_table = DataFrame(targetId = ["gamma"], targetValue = ["net1_output1"])
 
 save_hybrid_test_values(
@@ -40,8 +42,10 @@ create_petab_files(
 )
 
 # Adding the prior to the parameters table
-parameters_df = CSV.read(joinpath(@__DIR__, "petab", "parameters.tsv"), DataFrame;
-    stringtype = String)
+parameters_df = CSV.read(
+    joinpath(@__DIR__, "petab", "parameters.tsv"), DataFrame;
+    stringtype = String
+)
 parameters_df[1:3, :priorDistribution] .= "uniform"
 parameters_df[1:3, :priorParameters] .= "0.0;15.0"
 parameters_df[7, :priorDistribution] = "normal"

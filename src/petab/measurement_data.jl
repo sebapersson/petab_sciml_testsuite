@@ -14,27 +14,39 @@ function get_measurements(llh_id::Symbol)::DataFrame
         p2 = (alpha = 1.3, delta = 1.8, beta = 0.9, gamma = 1.0)
         oprob1 = remake(oprob_reference, p = p1)
         oprob2 = remake(oprob_reference, p = p2)
-        sol1 = solve(oprob1, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = 1:1:10)
-        sol2 = solve(oprob2, Vern9(), abstol = 1e-12, reltol = 1e-12, saveat = 1:1:10)
-        df1 = DataFrame(observableId = "prey_o", experimentId = "e1",
-            measurement = sol1[1, :] + randn(rng, 10) .* 0.05, time = sol1.t)
-        df2 = DataFrame(observableId = "predator_o", experimentId = "e1",
-            measurement = sol1[2, :] + randn(rng, 10) .* 0.05, time = sol1.t)
-        df3 = DataFrame(observableId = "prey_o", experimentId = "e2",
-            measurement = sol2[1, :] + randn(rng, 10) .* 0.05, time = sol2.t)
-        df4 = DataFrame(observableId = "predator_o", experimentId = "e2",
-            measurement = sol2[2, :] + randn(rng, 10) .* 0.05, time = sol2.t)
+        sol1 = solve(oprob1, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12, saveat = 1:1:10)
+        sol2 = solve(oprob2, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12, saveat = 1:1:10)
+        df1 = DataFrame(
+            observableId = "prey_o", experimentId = "e1",
+            measurement = sol1[1, :] + randn(rng, 10) .* 0.05, time = sol1.t
+        )
+        df2 = DataFrame(
+            observableId = "predator_o", experimentId = "e1",
+            measurement = sol1[2, :] + randn(rng, 10) .* 0.05, time = sol1.t
+        )
+        df3 = DataFrame(
+            observableId = "prey_o", experimentId = "e2",
+            measurement = sol2[1, :] + randn(rng, 10) .* 0.05, time = sol2.t
+        )
+        df4 = DataFrame(
+            observableId = "predator_o", experimentId = "e2",
+            measurement = sol2[2, :] + randn(rng, 10) .* 0.05, time = sol2.t
+        )
         return vcat(df1, df2, df3, df4)
     end
 
-    sol = solve(oprob_reference, Vern9(), abstol = 1e-9, reltol = 1e-9, saveat = 1:1:10)
-    df1 = DataFrame(observableId = "prey_o",
+    sol = solve(oprob_reference, Vern9(), abstol = 1.0e-9, reltol = 1.0e-9, saveat = 1:1:10)
+    df1 = DataFrame(
+        observableId = "prey_o",
         experimentId = "e1",
         measurement = sol[1, :] + randn(rng, 10) .* 0.05,
-        time = sol.t)
-    df2 = DataFrame(observableId = "predator_o",
+        time = sol.t
+    )
+    df2 = DataFrame(
+        observableId = "predator_o",
         experimentId = "e1",
         measurement = sol[2, :] + randn(rng, 10) .* 0.05,
-        time = sol.t)
+        time = sol.t
+    )
     return vcat(df1, df2)
 end

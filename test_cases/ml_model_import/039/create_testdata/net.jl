@@ -1,8 +1,10 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(layer1=Dense(2, 5),
-    layer2=Dense(5, 1),) do x
+nn_model = @compact(
+    layer1 = Dense(2, 5),
+    layer2 = Dense(5, 1),
+) do x
     embed = layer1(x)
     embed = celu.(embed)
     out = layer2(embed)

@@ -16,17 +16,20 @@ mapping_table = DataFrame(
         "net1_input2",
         "net1_output1",
         "net1_ps",
-        "net1_layer1"
+        "net1_layer1",
     ],
     modelEntityId = [
         "net1.inputs[0][0]",
         "net1.inputs[0][1]",
         "net1.outputs[0][0]",
         "net1.parameters",
-        "net1.parameters[layer1]"
-    ])
-hybridization_table = DataFrame(targetId = ["net1_input1", "net1_input2", "gamma"],
-    targetValue = ["prey", "predator", "net1_output1"])
+        "net1.parameters[layer1]",
+    ]
+)
+hybridization_table = DataFrame(
+    targetId = ["net1_input1", "net1_input2", "gamma"],
+    targetValue = ["prey", "predator", "net1_output1"]
+)
 
 save_hybrid_test_values(
     @__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids; freeze_info = freeze_info

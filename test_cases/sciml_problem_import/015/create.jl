@@ -12,9 +12,12 @@ petab_parameters_ids = [:alpha, :delta, :beta]
 # Mapping and hybridization generally differ between tests and must thus be hand-coded
 mapping_table = DataFrame(
     petabEntityId = ["input0", "net3_output1", "net3_ps"],
-    modelEntityId = ["net3.inputs[0]", "net3.outputs[0][0]", "net3.parameters"])
-hybridization_table = DataFrame(targetId = ["gamma"],
-    targetValue = ["net3_output1"])
+    modelEntityId = ["net3.inputs[0]", "net3.outputs[0][0]", "net3.parameters"]
+)
+hybridization_table = DataFrame(
+    targetId = ["gamma"],
+    targetValue = ["net3_output1"]
+)
 
 save_hybrid_test_values(
     @__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids; input_file_id = input_id

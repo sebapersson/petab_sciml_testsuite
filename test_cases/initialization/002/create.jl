@@ -1,8 +1,12 @@
 using DataFrames, PEtabSciMLTestsuite
 
 # The PEtab problem
-nets_info = Dict(:net1 => Dict(:ps_file => "net1_UDE1_ps.hdf5",
-    :static => false))
+nets_info = Dict(
+    :net1 => Dict(
+        :ps_file => "net1_UDE1_ps.hdf5",
+        :static => false
+    )
+)
 llh_id = :UDE1
 experiment_table_id = :Table1
 condition_table_id = :Nothing
@@ -16,17 +20,20 @@ mapping_table = DataFrame(
         "net1_input2",
         "net1_output1",
         "net1_ps",
-        "net1_layer1"
+        "net1_layer1",
     ],
     modelEntityId = [
         "net1.inputs[0][0]",
         "net1.inputs[0][1]",
         "net1.outputs[0][0]",
         "net1.parameters",
-        "net1.parameters[layer1].weight"
-    ])
-hybridization_table = DataFrame(targetId = ["net1_input1", "net1_input2", "gamma"],
-    targetValue = ["prey", "predator", "net1_output1"])
+        "net1.parameters[layer1].weight",
+    ]
+)
+hybridization_table = DataFrame(
+    targetId = ["net1_input1", "net1_input2", "gamma"],
+    targetValue = ["prey", "predator", "net1_output1"]
+)
 # Initialization info
 initializations_info = Dict(:net1 => Dict(:what_change => "layer1.weight", :value => 0.0))
 

@@ -18,14 +18,15 @@ mapping_table = DataFrame(
         "net1_input_pre1",
         "net1_input_pre2",
         "net1_output1",
-        "net1_ps"
+        "net1_ps",
     ],
     modelEntityId = [
         "net1.inputs[0][0]",
         "net1.inputs[0][1]",
         "net1.outputs[0][0]",
-        "net1.parameters"
-    ])
+        "net1.parameters",
+    ]
+)
 hybridization_table = DataFrame(targetId = ["gamma"], targetValue = ["net1_output1"])
 
 save_hybrid_test_values(
@@ -33,7 +34,7 @@ save_hybrid_test_values(
 )
 create_petab_files(
     @__DIR__, nets_info, sbml_id, llh_id, petab_parameters_ids, experiment_table_id,
-    condition_table_id, observable_table_id, mapping_table, hybridization_table;
+    condition_table_id, observable_table_id, mapping_table, hybridization_table
 )
 
 # Adding the prior to the parameters table

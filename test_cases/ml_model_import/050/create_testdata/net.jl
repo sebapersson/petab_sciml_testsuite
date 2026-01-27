@@ -1,9 +1,11 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(norm1=LayerNorm((12, 11, 10, 4); affine = true),
-    layer1=Conv((5, 5, 5), 4=>1; cross_correlation = true),
-    flatten1=FlattenLayer()) do x
+nn_model = @compact(
+    norm1 = LayerNorm((12, 11, 10, 4); affine = true),
+    layer1 = Conv((5, 5, 5), 4 => 1; cross_correlation = true),
+    flatten1 = FlattenLayer()
+) do x
     embed = norm1(x)
     embed = layer1(embed)
     out = flatten1(embed)

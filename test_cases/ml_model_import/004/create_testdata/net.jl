@@ -1,8 +1,10 @@
 using Lux, StableRNGs
 using PEtabSciMLTestsuite: save_ps, save_io, write_yaml
 
-nn_model = @compact(layer1=Conv((5, 5), 1=>2; cross_correlation = true),
-    layer2=Conv((2, 5), 2=>1; cross_correlation = true),) do x
+nn_model = @compact(
+    layer1 = Conv((5, 5), 1 => 2; cross_correlation = true),
+    layer2 = Conv((2, 5), 2 => 1; cross_correlation = true),
+) do x
     embed = layer1(x)
     out = layer2(embed)
     @return out
