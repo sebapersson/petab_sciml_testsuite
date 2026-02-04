@@ -8,7 +8,7 @@ function get_odeproblem(ode_id::Symbol, nn_models::Dict)
 
     if ode_id == :UDE1
         lv! = let nn = nn_models
-            (du, u, p, t) -> lv_ude1(du, u, p, t, nn)
+            (du, u, p, t) -> lv_ude1!(du, u, p, t, nn)
         end
         p_mechanistic = (alpha = 1.3, delta = 1.8, beta = 0.9)
         if haskey(nn_models, :net1)
@@ -47,6 +47,17 @@ function get_odeproblem(ode_id::Symbol, nn_models::Dict)
         u0 = [0.44249296, 4.6280594]
         return ODEProblem(lv!, u0, (0.0, 10.0), p_ode)
     end
+
+    if ode_id == :UDE4
+        lv! = let nn = nn_models
+            (du, u, p, t) -> lv_ude4!(du, u, p, t, nn)
+        end
+        p_mechanistic = (alpha = 1.3, delta = 1.8, beta = 0.9)
+        pnn = Lux.initialparameters(rng, nn_models[:net1][2])
+        p_ode = ComponentArray(merge(p_mechanistic, (net1 = pnn,)))
+        u0 = [0.44249296, 4.6280594]
+        return ODEProblem(lv!, u0, (0.0, 10.0), p_ode)
+    end
 end
 
 function lv_reference!(du, u, p, t)
@@ -58,7 +69,7 @@ function lv_reference!(du, u, p, t)
     return nothing
 end
 
-function lv_ude1(du, u, p, t, nn_models)
+function lv_ude1!(du, u, p, t, nn_models)
     prey, predator = u
     @unpack alpha, delta, beta = p
 
@@ -101,5 +112,17 @@ function lv_ude3!(du, u, p, t, nn_models)
 
     du[1] = du_nn[1] - beta * prey * predator # prey
     du[2] = du_nn[2] - delta * predator # predator
+    return nothing
+end
+
+function lv_ude4!(du, u, p, t, nn_models)
+    prey, predator = u
+    @unpack alpha, delta, beta = p
+
+    st1, nn1 = nn_models[:net1]
+    du_nn = nn1([prey + (alpha - 1.3), predator], p.net1, st1)[1][1]
+
+    du[1] = alpha * prey - beta * prey * predator # prey
+    du[2] = du_nn - delta * predator # predator
     return nothing
 end
