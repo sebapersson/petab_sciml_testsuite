@@ -23,9 +23,9 @@ extensions:
     neural_nets:
       net2:
         location: "net2.yaml"
-        static: false
+        pre_initialization: false
         format: "YAML"
       net1:
         location: "net1.yaml"
-        static: false
+        pre_initialization: false
         format: "YAML"

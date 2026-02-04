@@ -4,7 +4,7 @@ using DataFrames, PEtabSciMLTestsuite
 nets_info = Dict(
     :net1 => Dict(
         :ps_file => "net1_UDE1_ps.hdf5",
-        :static => false
+        :pre_initialization => false
     )
 )
 llh_id = :UDE1

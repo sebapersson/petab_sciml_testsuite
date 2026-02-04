@@ -1,6 +1,6 @@
 using DataFrames, PEtabSciMLTestsuite
 
-nets_info = Dict(:net4 => Dict(:ps_file => "net4_COMBO1_ps.hdf5", :static => false))
+nets_info = Dict(:net4 => Dict(:ps_file => "net4_COMBO1_ps.hdf5", :pre_initialization => false))
 ode_id = :UDE1
 llh_id = :COMBO4
 experiment_table_id = :Table1

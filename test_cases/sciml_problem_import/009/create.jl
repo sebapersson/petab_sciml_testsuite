@@ -3,11 +3,11 @@ using DataFrames, PEtabSciMLTestsuite
 nets_info = Dict(
     :net1 => Dict(
         :ps_file => "net1_OBS1_ps.hdf5",
-        :static => false
+        :pre_initialization => false
     ),
     :net2 => Dict(
         :ps_file => "net2_OBS1_ps.hdf5",
-        :static => false
+        :pre_initialization => false
     )
 )
 ode_id = :reference

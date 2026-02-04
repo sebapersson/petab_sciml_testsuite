@@ -3,7 +3,7 @@ using DataFrames, PEtabSciMLTestsuite
 nets_info = Dict(
     :net5 => Dict(
         :ps_file => "net5_UDE1_ps.hdf5",
-        :static => false
+        :pre_initialization => false
     )
 )
 ode_id = :UDE1

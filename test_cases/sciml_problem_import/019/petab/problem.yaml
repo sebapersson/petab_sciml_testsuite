@@ -22,5 +22,5 @@ extensions:
     neural_nets:
       net4:
         location: "net4.yaml"
-        static: false
+        pre_initialization: false
         format: "YAML"
