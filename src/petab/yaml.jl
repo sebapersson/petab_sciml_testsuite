@@ -30,7 +30,7 @@ function save_petab_yaml(
         ext[:neural_nets][net_id] = Dict(
             :location => "$(net_id).yaml",
             :format => "YAML",
-            :static => net_info[:static]
+            :pre_initialization => net_info[:pre_initialization]
         )
         push!(ext[:array_files], "$(net_id)_ps.hdf5")
     end

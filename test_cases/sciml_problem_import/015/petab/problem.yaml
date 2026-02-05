@@ -23,5 +23,5 @@ extensions:
     neural_nets:
       net3:
         location: "net3.yaml"
-        static: true
+        pre_initialization: true
         format: "YAML"
