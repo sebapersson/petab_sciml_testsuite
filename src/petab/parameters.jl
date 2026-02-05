@@ -4,7 +4,7 @@ const ALPHA = DataFrame(
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 1.3,
-    estimate = 1
+    estimate = true
 )
 
 const DELTA = DataFrame(
@@ -13,7 +13,7 @@ const DELTA = DataFrame(
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 1.8,
-    estimate = 1
+    estimate = true
 )
 
 const BETA = DataFrame(
@@ -22,7 +22,7 @@ const BETA = DataFrame(
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 0.9,
-    estimate = 1
+    estimate = true
 )
 
 const GAMMA = DataFrame(
@@ -31,7 +31,7 @@ const GAMMA = DataFrame(
     lowerBound = 0.0,
     upperBound = 15.0,
     nominalValue = 0.8,
-    estimate = 1
+    estimate = true
 )
 
 const NET1_INPUT_PRE1 = DataFrame(
@@ -40,7 +40,7 @@ const NET1_INPUT_PRE1 = DataFrame(
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 1.0,
-    estimate = 0
+    estimate = false
 )
 
 const NET1_INPUT_PRE2 = DataFrame(
@@ -49,7 +49,7 @@ const NET1_INPUT_PRE2 = DataFrame(
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 1.0,
-    estimate = 0
+    estimate = false
 )
 
 const NET1_INPUT_PRE2_EST = DataFrame(
@@ -58,7 +58,7 @@ const NET1_INPUT_PRE2_EST = DataFrame(
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 1.0,
-    estimate = 1
+    estimate = true
 )
 
 const NET2_INPUT_PRE1 = DataFrame(
@@ -67,7 +67,7 @@ const NET2_INPUT_PRE1 = DataFrame(
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 2.0,
-    estimate = 0
+    estimate = false
 )
 
 const NET2_INPUT_PRE2 = DataFrame(
@@ -76,7 +76,7 @@ const NET2_INPUT_PRE2 = DataFrame(
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 2.0,
-    estimate = 0
+    estimate = false
 )
 
 const NET1_LAYER1 = DataFrame(
@@ -85,7 +85,7 @@ const NET1_LAYER1 = DataFrame(
     lowerBound = "-inf",
     upperBound = "inf",
     nominalValue = 0.0,
-    estimate = 1
+    estimate = true
 )
 
 const NET1_LAYER1_FREEZE = DataFrame(
@@ -93,8 +93,8 @@ const NET1_LAYER1_FREEZE = DataFrame(
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
-    nominalValue = missing,
-    estimate = 0
+    nominalValue = "array",
+    estimate = false
 )
 
 const NET1_LAYER1_WEIGHT_FREEZE = DataFrame(
@@ -102,8 +102,8 @@ const NET1_LAYER1_WEIGHT_FREEZE = DataFrame(
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
-    nominalValue = missing,
-    estimate = 0
+    nominalValue = "array",
+    estimate = false
 )
 
 const NET1_LAYER1_PRIOR = DataFrame(
@@ -111,8 +111,8 @@ const NET1_LAYER1_PRIOR = DataFrame(
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
-    nominalValue = missing,
-    estimate = 1,
+    nominalValue = "array",
+    estimate = true,
     priorDistribution = "normal",
     priorParameters = "0.0;2.0"
 )
@@ -122,8 +122,8 @@ const NET1_LAYER1_WEIGHT_PRIOR = DataFrame(
     parameterScale = "lin",
     lowerBound = "-inf",
     upperBound = "inf",
-    nominalValue = missing,
-    estimate = 1,
+    nominalValue = "array",
+    estimate = true,
     priorDistribution = "normal",
     priorParameters = "0.0;2.0"
 )
@@ -141,7 +141,7 @@ function save_parameters_table(
     net_ids = @. string(_net_ids) * "_ps"
     df_nn = DataFrame(
         parameterId = net_ids, parameterScale = :lin, lowerBound = "-inf",
-        upperBound = "inf", nominalValue = missing, estimate = Int(estimate_net_parameters)
+        upperBound = "inf", nominalValue = "array", estimate = Int(estimate_net_parameters)
     )
 
     df_save = vcat(df_mech, df_nn, cols = :union)
