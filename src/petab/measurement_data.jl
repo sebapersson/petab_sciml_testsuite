@@ -9,7 +9,7 @@ end
 function get_measurements(llh_id::Symbol)::DataFrame
     rng = StableRNGs.StableRNG(1)
     oprob_reference = get_odeproblem(:reference, Dict())
-    if llh_id in [:pre_ODE2, :pre_ODE8]
+    if llh_id in [:pre_ODE2, :pre_ODE8, :UDE5]
         p1 = (alpha = 1.3, delta = 1.8, beta = 0.9, gamma = 0.8)
         p2 = (alpha = 1.3, delta = 1.8, beta = 0.9, gamma = 1.0)
         oprob1 = remake(oprob_reference, p = p1)
@@ -31,6 +31,29 @@ function get_measurements(llh_id::Symbol)::DataFrame
         df4 = DataFrame(
             observableId = "predator_o", experimentId = "e2",
             measurement = sol2[2, :] + randn(rng, 10) .* 0.05, time = sol2.t
+        )
+        return vcat(df1, df2, df3, df4)
+    end
+
+    if llh_id == :OBS5
+        sol = solve(
+            oprob_reference, Vern9(), abstol = 1.0e-9, reltol = 1.0e-9, saveat = 1:1:10
+        )
+        df1 = DataFrame(
+            observableId = "prey_o", experimentId = "e1",
+            measurement = sol[1, :] + randn(rng, 10) .* 0.05, time = sol.t
+        )
+        df2 = DataFrame(
+            observableId = "predator_o", experimentId = "e1",
+            measurement = sol[2, :] + randn(rng, 10) .* 0.05, time = sol.t
+        )
+        df3 = DataFrame(
+            observableId = "prey_o", experimentId = "e2",
+            measurement = sol[1, :] .+ 0.1 .+ randn(rng, 10) .* 0.05, time = sol.t
+        )
+        df4 = DataFrame(
+            observableId = "predator_o", experimentId = "e2",
+            measurement = sol[2, :] + randn(rng, 10) .* 0.05, time = sol.t
         )
         return vcat(df1, df2, df3, df4)
     end

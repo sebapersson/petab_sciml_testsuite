@@ -87,6 +87,22 @@ class Net5(nn.Module):
         return x
 
 
+class Net6(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.layer1 = nn.Linear(4, 5)
+        self.layer2 = nn.Linear(5, 10)
+        self.layer3 = nn.Linear(10, 1)
+
+    def forward(self, net_input1: torch.Tensor, net_input2: torch.Tensor) -> torch.Tensor:
+        net_input = torch.cat((net_input1, net_input2))
+        x = self.layer1(net_input)
+        x = F.relu(x)
+        x = self.layer2(x)
+        x = F.relu(x)
+        x = self.layer3(x)
+        return x
+
 def get_net_yaml(net_id):
     if net_id == "net1":
         net = Net1()
@@ -96,8 +112,10 @@ def get_net_yaml(net_id):
         net = Net3()
     elif net_id == "net4":
         net = Net4()
-    else:
+    elif net_id == "net5":
         net = Net5()
+    else:
+        net = Net6()
 
     if net_id == "net5":
         inputs = [Input(input_id="input0"), Input(input_id="input1")]
@@ -121,3 +139,4 @@ get_net_yaml("net2")
 get_net_yaml("net3")
 get_net_yaml("net4")
 get_net_yaml("net5")
+get_net_yaml("net6")
