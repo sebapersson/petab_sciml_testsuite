@@ -117,7 +117,7 @@ def get_net_yaml(net_id):
     else:
         net = Net6()
 
-    if net_id == "net5":
+    if net_id in ["net5", "net6"]:
         inputs = [Input(input_id="input0"), Input(input_id="input1")]
     else:
         inputs = [Input(input_id="input0")]

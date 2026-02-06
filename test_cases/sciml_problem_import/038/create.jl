@@ -31,7 +31,7 @@ mapping_table = DataFrame(
 )
 hybridization_table = DataFrame(
     targetId = ["net6_input1", "net6_input2", "gamma"],
-    targetValue = ["prey", "ARRAY_FILE", "net6_output1"]
+    targetValue = ["prey", "array", "net6_output1"]
 )
 
 save_hybrid_test_values(@__DIR__, nets_info, ode_id, llh_id, petab_parameters_ids)

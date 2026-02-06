@@ -134,6 +134,7 @@ function llh_UDE4(x, oprob::ODEProblem, measurements::DataFrame)::Real
     _oprob = remake(oprob, p = convert.(eltype(x), oprob.p))
     _oprob.p.net6 .= x.net6
     _oprob.p[1:3] .= x[1:3]
+    _oprob.p[4:6] .= [1.0, 2.0, 3.0]
     sol = solve(_oprob, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12, saveat = tsave)
     return _llh1(sol, mprey, mpredator)
 end
@@ -348,7 +349,7 @@ function llh_OBS5(x, oprob::ODEProblem, nn_models, measurements::DataFrame)::Rea
             measurements, experiment = experiment
         )
         sol = solve(_oprob, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12, saveat = tsave)
-        if experiment == 1
+        if experiment == "e1"
             llh += _llh7(sol, mprey, mpredator, x, nn_models)
         else
             llh += _llh8(sol, mprey, mpredator, x, nn_models)
