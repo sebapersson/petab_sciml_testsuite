@@ -570,7 +570,9 @@ function get_x(petab_parameters_ids, x_nn, nets_info::Dict)
     x_mechanistic = Vector{Pair{Symbol, Float64}}(undef, 0)
     for id in petab_parameters_ids
         _get_parameter_info(id, :estimate) == false && continue
-        ismissing(_get_parameter_info(id, :value)) && continue
+        if _get_parameter_info(id, :value) == "array"
+            continue
+        end
         push!(x_mechanistic, id => _get_parameter_info(id, :value))
     end
     x_mechanistic = NamedTuple(x_mechanistic)

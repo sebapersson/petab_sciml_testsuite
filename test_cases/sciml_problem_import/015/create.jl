@@ -15,8 +15,8 @@ mapping_table = DataFrame(
     modelEntityId = ["net3.inputs[0]", "net3.outputs[0][0]", "net3.parameters"]
 )
 hybridization_table = DataFrame(
-    targetId = ["gamma"],
-    targetValue = ["net3_output1"]
+    targetId = ["input0", "gamma"],
+    targetValue = ["array", "net3_output1"]
 )
 
 save_hybrid_test_values(
