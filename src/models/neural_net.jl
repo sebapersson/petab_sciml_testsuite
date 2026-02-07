@@ -14,6 +14,9 @@ function get_net_models(nets_info::Dict)
         if net_id == :net4
             out[net_id] = get_net4()
         end
+        if net_id == :net6
+            out[net_id] = get_net6()
+        end
     end
     return out
 end
@@ -72,6 +75,22 @@ function get_net4()
         layer1 = Dense(2, 5, Lux.tanh),
         layer2 = Dense(5, 5, Lux.tanh),
         layer3 = Dense(5, 2)
+    ) do x
+        embed = layer1(x)
+        embed = layer2(embed)
+        out = layer3(embed)
+        @return out
+    end
+    _, st = Lux.setup(rng, nn_model)
+    return st, nn_model
+end
+
+function get_net6()
+    rng = StableRNGs.StableRNG(1)
+    nn_model = @compact(
+        layer1 = Dense(4, 5, Lux.relu),
+        layer2 = Dense(5, 10, Lux.relu),
+        layer3 = Dense(10, 1)
     ) do x
         embed = layer1(x)
         embed = layer2(embed)
