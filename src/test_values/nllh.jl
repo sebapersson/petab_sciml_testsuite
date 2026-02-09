@@ -497,8 +497,8 @@ function _llh7(sol::ODESolution, mprey, mpredator, x, nn_models)
     nllh, σ = 0.0, 0.05
     for i in eachindex(mprey)
         model_output = (
-            nn_model6([prey[i], 1.0, 2.0, 3.0], x.net6, st6)[1][1] - 0.9  +
-            prey[i]
+            nn_model6([prey[i], 1.0, 2.0, 3.0], x.net6, st6)[1][1] - 0.9 +
+                prey[i]
         )
         nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mprey[i] - model_output)^2 / σ^2
     end
@@ -514,8 +514,8 @@ function _llh8(sol::ODESolution, mprey, mpredator, x, nn_models)
     nllh, σ = 0.0, 0.05
     for i in eachindex(mprey)
         model_output = (
-            nn_model6([prey[i], 3.0, 2.0, 1.0], x.net6, st6)[1][1] - 0.9  +
-            prey[i]
+            nn_model6([prey[i], 3.0, 2.0, 1.0], x.net6, st6)[1][1] - 0.9 +
+                prey[i]
         )
         nllh += log(σ) + 0.5 * log(2π) + 0.5 * (mprey[i] - model_output)^2 / σ^2
     end
