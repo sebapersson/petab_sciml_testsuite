@@ -1,8 +1,8 @@
 # Test Case 039
 
 Test case for when a feed-forward neural network appears in one of the observable formulas,
-and one of the ML model input arguments is given via an array file that takes condition
-specific vales.
+and one of the ML model input arguments is given via an array file where the array file
+contains condition specific values.
 
 ## Model Structure
 

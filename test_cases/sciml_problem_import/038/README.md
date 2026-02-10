@@ -1,7 +1,8 @@
 # Test Case 038
 
 Test case for when a feed-forward neural network is a part of the ODE right-hand side,
-where one input argument to the ML model is a condition specific array input.
+and one of the ML model input arguments is given via an array file where the array file
+contains condition specific values.
 
 ## Model Structure
 

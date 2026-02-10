@@ -1,6 +1,7 @@
 # Test Case 036
 
-Test case for when a feed-forward neural network is a part of the ODE right-hand side.
+Test case for when a feed-forward neural network is a part of the ODE right-hand side,
+and one of the ML model input arguments is given via an array file.
 
 ## Model Structure
 
