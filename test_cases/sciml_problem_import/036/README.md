@@ -10,7 +10,7 @@ $$\frac{\mathrm{d} \text{prey}}{\mathrm{d} t} = \alpha \cdot \text{prey} - \beta
 
 $$\frac{\mathrm{d} \text{predator}}{\mathrm{d} t} = \gamma \cdot \text{prey} \cdot \text{predator} - \delta \cdot \text{predator}$$
 
-Where the parameter $\gamma$ is given a simulation hybridized ML model.
+Where the parameter $\gamma$ is given by a simulation hybridized ML model.
 
 ## Data-Driven Model Structure
 
