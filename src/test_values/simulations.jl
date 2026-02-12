@@ -22,6 +22,36 @@ function get_simulations(
         simulated_values = vcat(sol[1, :], sol[2, :])
     end
 
+    if llh_id in [:UDE4]
+        ode_problem.p.net6 .= x.net6
+        ode_problem.p[1:3] .= x[1:3]
+        sol = solve(
+            ode_problem, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12,
+            saveat = unique(measurements.time)
+        )
+        simulated_values = vcat(sol[1, :], sol[2, :])
+    end
+
+    if llh_id in [:UDE5]
+        ode_problem.p.net6 .= x.net6
+        ode_problem.p[1:3] .= x[1:3]
+        simulated_values = Float64[]
+        for experiment in ["e1", "e2"]
+            if experiment == "e1"
+                ode_problem.p[4:6] .= [1.0, 2.0, 3.0]
+            else
+                ode_problem.p[4:6] .= [3.0, 2.0, 1.0]
+            end
+
+            sol = solve(
+                ode_problem, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12,
+                saveat = unique(measurements.time)
+            )
+            _simulated_values = vcat(sol[1, :], sol[2, :])
+            simulated_values = vcat(simulated_values, _simulated_values)
+        end
+    end
+
     if llh_id in [:pre_ODE1, :pre_ODE3, :pre_ODE4]
         if llh_id in [:pre_ODE1, :pre_ODE4]
             input = [1.0, 1.0]
@@ -167,6 +197,43 @@ function get_simulations(
         prey = [nn_model4(sol[:, i], x.net4, st4)[1][1] for i in eachindex(sol.t)]
         predator = [nn_model4(sol[:, i], x.net4, st4)[1][2] for i in eachindex(sol.t)]
         simulated_values = vcat(prey, predator)
+    end
+
+    if llh_id == :OBS4
+        st6, nn_model6 = nn_models[:net6]
+        sol = solve(
+            ode_problem, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12,
+            saveat = unique(measurements.time)
+        )
+        prey = zeros(length(sol.t))
+        for i in eachindex(prey)
+            prey[i] = nn_model6([sol[1, i], 1.0, 2.0, 3.0], x.net6, st6)[1][1] - 0.9 +
+                sol[1, i]
+        end
+        simulated_values = vcat(prey, sol[2, :])
+    end
+
+    if llh_id == :OBS5
+        st6, nn_model6 = nn_models[:net6]
+        sol = solve(
+            ode_problem, Vern9(), abstol = 1.0e-12, reltol = 1.0e-12,
+            saveat = unique(measurements.time)
+        )
+        simulated_values = Float64[]
+        for experiment in ["e1", "e2"]
+            prey = zeros(length(sol.t))
+            for i in eachindex(prey)
+                if experiment == "e1"
+                    prey[i] = nn_model6([sol[1, i], 1.0, 2.0, 3.0], x.net6, st6)[1][1] -
+                        0.9 + sol[1, i]
+                else
+                    prey[i] = nn_model6([sol[1, i], 3.0, 2.0, 1.0], x.net6, st6)[1][1] -
+                        0.9 + sol[1, i]
+                end
+            end
+            _simulated_values = vcat(prey, sol[2, :])
+            simulated_values = vcat(simulated_values, _simulated_values)
+        end
     end
 
     if llh_id == :COMBO1
