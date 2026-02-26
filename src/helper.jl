@@ -93,7 +93,7 @@ function save_io(
         g_output0["data"] = xsave
     end
     g_metadata = HDF5.create_group(f, "metadata")
-    g_metadata["perm"] = "row"
+    g_metadata["pytorch_format"] = true
     close(f)
     return nothing
 end
@@ -124,7 +124,7 @@ function nn_ps_to_h5(
 
     # In the PEtabSciML standard parameters are Row-Major
     g_metadata = HDF5.create_group(file, "metadata")
-    g_metadata["perm"] = "row"
+    g_metadata["pytorch_format"] = true
     close(file)
     return nothing
 end
