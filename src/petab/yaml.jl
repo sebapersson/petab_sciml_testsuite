@@ -3,7 +3,7 @@ function save_petab_yaml(
         condition_table_id::Symbol
     )
     yaml_dict = Dict(
-        :format_version => 2,
+        :format_version => "2.0.0",
         :measurement_files => ["measurements.tsv"],
         :experiment_files => ["experiments.tsv"],
         :observable_files => ["observables.tsv"],
@@ -24,7 +24,9 @@ function save_petab_yaml(
     ext = Dict(
         :hybridization_files => ["hybridization.tsv"],
         :neural_nets => Dict(),
-        :array_files => String[]
+        :array_files => String[],
+        :version => "0.1.0",
+        :required => true
     )
     for (net_id, net_info) in nets_info
         ext[:neural_nets][net_id] = Dict(
