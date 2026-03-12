@@ -6,7 +6,7 @@ measurement_files:
   - "measurements.tsv"
 observable_files:
   - "observables.tsv"
-format_version: 2
+format_version: "2.0.0"
 experiment_files:
   - "experiments.tsv"
 parameter_files:
@@ -18,8 +18,10 @@ extensions:
     array_files:
       - "net6_ps.hdf5"
       - "net6_input1.hdf5"
+    version: "0.1.0"
     hybridization_files:
       - "hybridization.tsv"
+    required: true
     neural_nets:
       net6:
         location: "net6.yaml"

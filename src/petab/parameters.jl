@@ -141,7 +141,7 @@ function save_parameters_table(
     net_ids = @. string(_net_ids) * "_ps"
     df_nn = DataFrame(
         parameterId = net_ids, parameterScale = :lin, lowerBound = "-inf",
-        upperBound = "inf", nominalValue = "array", estimate = Int(estimate_net_parameters)
+        upperBound = "inf", nominalValue = "array", estimate = string(estimate_net_parameters)
     )
 
     df_save = vcat(df_mech, df_nn, cols = :union)

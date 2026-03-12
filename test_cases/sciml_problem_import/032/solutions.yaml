@@ -5,5 +5,5 @@ grad_files:
   mech: "grad_mech.tsv"
   net1: "grad_net1.hdf5"
 tol_simulations: 0.001
-log_posterior: -22.83360800261655
+log_posterior: -22.833608002616536
 tol_log_posterior: 0.001
